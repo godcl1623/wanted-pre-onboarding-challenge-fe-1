@@ -1,13 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { InputValidState } from 'types';
 import FormInput from 'components/FormInput';
+import FormSubmit from 'components/FormSubmit';
 import { handleSubmit } from './controllers';
 import { emailRule, passwordRule } from './utils';
-
-interface InputValidState {
-  email: boolean;
-  password: boolean;
-}
 
 export default function Login() {
   const [inputValidState, setInputValidState] = React.useState<InputValidState>(
@@ -48,16 +45,12 @@ export default function Login() {
           checkValidation={checkValidation}
         />
         <div className="flex-center flex-col w-full py-5">
-          <input
-            type="submit"
-            name="login_button"
-            value="로그인"
-            disabled={!(inputValidState.email && inputValidState.password)}
-            className={`login-area-buttons mb-3 bg-blue-300 cursor-pointer ${
+          <FormSubmit
+            disableCondition={
               !(inputValidState.email && inputValidState.password)
-                ? 'opacity-50 cursor-default'
-                : 'opacity-100 cursor-pointer'
-            }`}
+            }
+            additionalStyles="mb-3"
+            value="로그인"
           />
           <Link to="/signup" className="login-area-buttons bg-red-300">
             회원가입

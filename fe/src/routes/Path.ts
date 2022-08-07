@@ -1,6 +1,7 @@
 enum Path {
   Root = '/',
-  Todo = '/todo',
+  Auth = '/auth',
+  SignUp = '/signup',
 }
 
 export default Path;

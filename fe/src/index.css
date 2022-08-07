@@ -16,6 +16,7 @@
     padding: 0;
     border: 0;
     vertical-align: baseline;
+    font-size: 14px;
   }
   a {
     color: inherit;
@@ -89,6 +90,95 @@
     @apply flex;
     @apply justify-center;
     @apply items-center;
+  }
+
+  .main-base {
+    @apply flex-center;
+    @apply w-full;
+    @apply h-full;
+    @apply bg-slate-100;
+  }
+
+  .form-base {
+    @apply flex-center;
+    @apply flex-col;
+    @apply w-[500px];
+    @apply min-h-[300px];
+    @apply border-solid;
+    @apply p-5;
+    @apply rounded-lg;
+    @apply shadow-xl;
+    @apply bg-slate-50;
+  }
+
+  .login-input-area {
+    @apply flex-center;
+    @apply flex-col;
+    @apply w-full;
+    @apply min-h-[50px];
+    @apply mb-10;
+  }
+
+  .login-input {
+    @apply h-[30px];
+    @apply ml-3;
+    @apply rounded-lg;
+    @apply shadow-lg;
+    @apply py-3;
+    @apply px-5;
+  }
+
+  .login-area-buttons {
+    @apply flex-center;
+    @apply w-1/2;
+    @apply rounded-lg;
+    @apply shadow-lg;
+    @apply py-2;
+    @apply text-white;
+  }
+
+  .todo-list-item-base {
+    @apply flex-center;
+    @apply h-[100px];
+    @apply mb-10;
+  }
+
+  .todo-list-item {
+    @apply todo-list-item-base;
+    @apply rounded-lg;
+    @apply shadow-lg;
+    @apply p-3;
+    @apply bg-white;
+  }
+
+  .todo-list-add {
+    @apply flex-center;
+    @apply w-[100px];
+    @apply h-full;
+    @apply rounded-full;
+    @apply pb-6;
+    @apply bg-zinc-300;
+    @apply text-8xl;
+    @apply text-white;
+    @apply cursor-pointer;
+  }
+
+  .button-base {
+    @apply py-2;
+    @apply px-4;
+    @apply rounded-md;
+    @apply shadow-lg;
+    @apply text-white;
+  }
+
+  .button-modify {
+    @apply button-base;
+    @apply bg-blue-300;
+  }
+
+  .button-alert {
+    @apply button-base;
+    @apply bg-red-300;
   }
 }
 

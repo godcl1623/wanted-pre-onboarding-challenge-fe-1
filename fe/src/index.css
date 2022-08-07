@@ -92,10 +92,28 @@
     @apply items-center;
   }
 
+  .main-base {
+    @apply flex-center;
+    @apply w-full;
+    @apply h-full;
+    @apply bg-slate-100;
+  }
+
+  .form-base {
+    @apply flex-center;
+    @apply flex-col;
+    @apply w-[500px];
+    @apply min-h-[300px];
+    @apply border-solid;
+    @apply rounded-lg;
+    @apply shadow-xl;
+    @apply bg-slate-50;
+  }
+
   .login-input-area {
     @apply flex-center;
     @apply w-full;
-    @apply h-[50px];
+    @apply min-h-[50px];
   }
 
   .login-input {
@@ -114,6 +132,12 @@
     @apply shadow-lg;
     @apply py-2;
     @apply text-white;
+  }
+
+  .signup-input-area {
+    @apply login-input-area;
+    @apply flex-col;
+    @apply mb-10;
   }
 }
 

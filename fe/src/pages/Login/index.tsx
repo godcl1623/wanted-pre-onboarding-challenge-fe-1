@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom';
 
 export default function Login() {
   return (
-    <main className="flex-center w-full h-full bg-slate-100">
-      <form className="flex-center flex-col w-[500px] h-[300px] border-solid rounded-lg shadow-xl bg-slate-50">
+    <main className="main-base">
+      <form className="form-base">
         <label htmlFor="id_input" className="login-input-area">
-          ID:
+          Email:
           <input type="text" name="id_input" className="login-input" />
         </label>
         <label htmlFor="password_input" className="login-input-area">

@@ -1,0 +1,96 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html,
+  body,
+  #root {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    vertical-align: baseline;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+  input:focus {
+    outline: none;
+  }
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  /* HTML5 display-role reset for older browsers */
+  article,
+  aside,
+  details,
+  figcaption,
+  figure,
+  footer,
+  header,
+  hgroup,
+  menu,
+  nav,
+  section {
+    display: block;
+  }
+  body {
+    line-height: 1;
+    margin: 0;
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  ol,
+  ul {
+    list-style: none;
+  }
+  li {
+    list-style: none;
+  }
+  blockquote,
+  q {
+    quotes: none;
+  }
+  blockquote:before,
+  blockquote:after,
+  q:before,
+  q:after {
+    content: '';
+    content: none;
+  }
+  table {
+    border-collapse: collapse;
+    border-spacing: 0;
+  }
+  /** 버튼회색배경, 보더 없애기, 커서 포인터 주기**/
+  button {
+    border: 0 none;
+    background-color: transparent;
+    cursor: pointer;
+    padding: 0;
+  }
+}
+
+@layer components {
+  .flex-center {
+    @apply flex;
+    @apply justify-center;
+    @apply items-center;
+  }
+}
+
+@layer utilities {
+}

@@ -16,6 +16,7 @@
     padding: 0;
     border: 0;
     vertical-align: baseline;
+    font-size: 14px;
   }
   a {
     color: inherit;
@@ -89,6 +90,30 @@
     @apply flex;
     @apply justify-center;
     @apply items-center;
+  }
+
+  .login-input-area {
+    @apply flex-center;
+    @apply w-full;
+    @apply h-[50px];
+  }
+
+  .login-input {
+    @apply h-[30px];
+    @apply ml-3;
+    @apply rounded-lg;
+    @apply shadow-lg;
+    @apply py-3;
+    @apply px-5;
+  }
+
+  .login-area-buttons {
+    @apply flex-center;
+    @apply w-1/2;
+    @apply rounded-lg;
+    @apply shadow-lg;
+    @apply py-2;
+    @apply text-white;
   }
 }
 

@@ -1,9 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { InputValidState } from 'types';
+import { emailRule, passwordRule } from 'pages/Login/utils';
+import { handleSignUp } from 'controllers/index';
 import FormInput from 'components/FormInput';
 import FormSubmit from 'components/FormSubmit';
-import { emailRule, passwordRule } from 'pages/Login/utils';
 
 interface SignUpValidState extends InputValidState {
   passwordCheck: boolean;
@@ -26,9 +27,17 @@ export default function SignUp() {
     }));
   };
 
+  async function handleSubmit(event: React.FormEvent) {
+    const signUpResult = await handleSignUp(event);
+    if (signUpResult) {
+      alert('회원가입이 완료되었습니다.');
+      navigate('/');
+    }
+  }
+
   return (
     <main className="main-base">
-      <form className="form-base p-5">
+      <form className="form-base p-5" onSubmit={handleSubmit}>
         <FormInput
           type="text"
           name="email"

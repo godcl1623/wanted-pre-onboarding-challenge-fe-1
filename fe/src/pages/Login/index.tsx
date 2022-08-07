@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { InputValidState } from 'types';
 import FormInput from 'components/FormInput';
 import FormSubmit from 'components/FormSubmit';
-import { handleSubmit } from './controllers';
+import { handleLogin } from '../../controllers';
 import { emailRule, passwordRule } from './utils';
 
 export default function Login() {
@@ -23,7 +23,7 @@ export default function Login() {
 
   return (
     <main className="main-base">
-      <form className="form-base" onSubmit={handleSubmit}>
+      <form className="form-base" onSubmit={handleLogin}>
         <FormInput
           type="text"
           name="email"

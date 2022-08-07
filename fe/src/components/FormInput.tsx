@@ -23,9 +23,6 @@ const FormInput = React.forwardRef<HTMLInputElement, FormInputProps>(
       checkValidation,
       regexRule,
     } = props;
-    React.useEffect(() => {
-      console.log(regexRule);
-    }, [regexRule]);
     const inputValueCount = React.useRef<number>(0);
     const validationResult =
       name === 'passwordCheck'

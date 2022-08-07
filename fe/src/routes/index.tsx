@@ -10,8 +10,8 @@ export default function Routing() {
   return (
     <Router>
       <Routes>
-        <Route path={Path.Root} element={<Login />} />
-        <Route path={Path.Todo} element={<Todo />} />
+        <Route path={Path.Root} element={<Todo />} />
+        <Route path={Path.Auth} element={<Login />} />
         <Route path={Path.SignUp} element={<SignUp />} />
         <Route path="*" element={<Exceptions />} />
       </Routes>

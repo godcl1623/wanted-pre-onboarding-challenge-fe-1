@@ -105,6 +105,7 @@
     @apply w-[500px];
     @apply min-h-[300px];
     @apply border-solid;
+    @apply p-5;
     @apply rounded-lg;
     @apply shadow-xl;
     @apply bg-slate-50;
@@ -112,8 +113,10 @@
 
   .login-input-area {
     @apply flex-center;
+    @apply flex-col;
     @apply w-full;
     @apply min-h-[50px];
+    @apply mb-10;
   }
 
   .login-input {
@@ -132,12 +135,6 @@
     @apply shadow-lg;
     @apply py-2;
     @apply text-white;
-  }
-
-  .signup-input-area {
-    @apply login-input-area;
-    @apply flex-col;
-    @apply mb-10;
   }
 }
 

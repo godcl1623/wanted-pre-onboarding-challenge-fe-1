@@ -4,6 +4,7 @@ enum Path {
   SignUp = '/signup',
   Detail = '/:id/detail',
   Add = '/add',
+  Modify = '/:id/modify',
 }
 
 export default Path;

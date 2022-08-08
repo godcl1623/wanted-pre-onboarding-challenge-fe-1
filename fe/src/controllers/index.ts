@@ -77,13 +77,15 @@ export async function updateTodoItem(
   todoId: string,
   content: string,
 ) {
+  let result = false;
   try {
     const response = await updateTodo(authenticationToken, todoId, content);
     console.log(response);
-    return response;
+    result = true;
   } catch (error) {
     throw new Error(error as string);
   }
+  return result;
 }
 
 export async function deleteTodoItem(

@@ -2,6 +2,7 @@ import React from 'react';
 import { format } from 'date-fns';
 import { NavLink, useParams } from 'react-router-dom';
 import { TodoItemType } from 'types';
+import ModifyButton from 'components/ModifyButton';
 
 export default function ListItem({
   id,
@@ -32,9 +33,13 @@ export default function ListItem({
         <section className="w-[30%] h-full">
           <p className="flex-center h-1/2 pb-1 text-zinc-400">{dateString}</p>
           <div className="flex-center justify-evenly h-1/2">
-            <button type="button" className="button-modify">
-              수정
-            </button>
+            <ModifyButton
+              id={id}
+              title={title}
+              content={content}
+              createdAt={createdAt}
+              updatedAt={updatedAt}
+            />
             <button type="button" className="button-alert">
               삭제
             </button>

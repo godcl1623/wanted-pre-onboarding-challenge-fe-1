@@ -1,10 +1,13 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { createTodoItem } from 'controllers';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { updateTodoItem } from 'controllers';
+import { TodoItemType } from 'types';
 
-export default function AddItemDetail() {
+export default function ModifyItemDetail() {
   const navigate = useNavigate();
+  const { state } = useLocation();
   const authenticationToken = localStorage.getItem('auth');
+  const itemInfo = state as TodoItemType;
   return (
     <article id="details" className="basis-1/2 ml-[0.5%] shadow-lg p-10">
       <form
@@ -15,23 +18,30 @@ export default function AddItemDetail() {
           const titleInput = (currentForm[0] as HTMLInputElement).value;
           const contentInput = (currentForm[1] as HTMLTextAreaElement).value;
           const queryString = `title=${titleInput}&content=${contentInput}`;
-          createTodoItem(authenticationToken, queryString).then((result) => {
-            if (result) {
-              alert('저장이 완료됐습니다.');
-              navigate('/');
-            }
-          });
+          updateTodoItem(authenticationToken, itemInfo.id, queryString).then(
+            (result) => {
+              if (result) {
+                alert('수정이 완료됐습니다.');
+                navigate(`/${itemInfo.id}/detail`);
+              }
+            },
+          );
         }}
       >
         <input
           type="text"
           name="title"
           placeholder="제목"
+          defaultValue={itemInfo.title}
           className="w-full h-[10%] px-5 text-6xl bg-transparent"
         />
         <hr className="my-[3%] border border-solid" />
         <section className="h-[80%] py-3">
-          <textarea name="content" className="w-full h-full p-3 text-xl" />
+          <textarea
+            name="content"
+            defaultValue={itemInfo.content}
+            className="w-full h-full p-3 text-xl"
+          />
         </section>
         <section className="flex justify-end h-[5%] mt-3">
           <button

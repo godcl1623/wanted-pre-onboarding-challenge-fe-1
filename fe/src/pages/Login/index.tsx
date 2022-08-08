@@ -1,18 +1,19 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { InputValidState } from 'types';
 import FormInput from 'components/FormInput';
 import FormSubmit from 'components/FormSubmit';
 import { handleLogin } from '../../controllers';
 import { emailRule, passwordRule } from './utils';
 
-export default function Login() {
+function Login() {
   const [inputValidState, setInputValidState] = React.useState<InputValidState>(
     {
       email: false,
       password: false,
     },
   );
+  const navigate = useNavigate();
 
   const checkValidation = (target: string, validationResult: boolean) => {
     setInputValidState((previousState: InputValidState) => ({
@@ -21,9 +22,18 @@ export default function Login() {
     }));
   };
 
+  function handleSubmit(event: React.FormEvent) {
+    handleLogin(event).then((loginResult: boolean) => {
+      if (loginResult) {
+        alert('로그인 되었습니다.');
+        navigate('/');
+      }
+    });
+  }
+
   return (
     <main className="main-base">
-      <form className="form-base" onSubmit={handleLogin}>
+      <form className="form-base" onSubmit={handleSubmit}>
         <FormInput
           type="text"
           name="email"
@@ -60,3 +70,5 @@ export default function Login() {
     </main>
   );
 }
+
+export default React.memo(Login);

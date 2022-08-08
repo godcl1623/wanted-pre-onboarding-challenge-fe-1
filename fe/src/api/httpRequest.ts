@@ -18,23 +18,23 @@ export class HttpRequest {
     });
   }
 
-  async get<T>(url: string) {
-    const res = await this.axios.get<T>(url);
+  async get<T>(url: string, options?: T) {
+    const res = await this.axios.get(url, options);
     return res;
   }
 
-  async post<T>(url: string, data: T) {
-    const response = await this.axios.post(url, data);
+  async post<T, K>(url: string, data: T, options?: K) {
+    const response = await this.axios.post(url, data, options);
     return response;
   }
 
-  async put<T>(url: string, data: T) {
-    const response = await this.axios.put(url, data);
+  async put<T, K>(url: string, data: T, options?: K) {
+    const response = await this.axios.put(url, data, options);
     return response;
   }
 
-  async delete(url: string) {
-    const response = await this.axios.delete(url);
+  async delete(url: string, options: any) {
+    const response = await this.axios.delete(url, options);
     return response;
   }
 }

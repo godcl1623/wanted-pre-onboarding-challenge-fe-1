@@ -7,15 +7,18 @@ export async function handleLogin(event: React.FormEvent) {
   const formEventTarget = event.target as HTMLFormElement;
   const emailInput = formEventTarget[0] as HTMLInputElement;
   const passwordInput = formEventTarget[1] as HTMLInputElement;
+  let result = false;
   try {
     const loginResult = await loginController(
       emailInput.value,
       passwordInput.value,
     );
     localStorage.setItem('auth', loginResult.token);
+    result = true;
   } catch (error) {
     alert('로그인 정보가 올바르지 않습니다.');
   }
+  return result;
 }
 
 export async function handleSignUp(event: React.FormEvent) {

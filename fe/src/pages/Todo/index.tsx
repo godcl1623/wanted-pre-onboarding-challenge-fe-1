@@ -1,7 +1,12 @@
 import React from 'react';
 import ListItem from './components/ListItem';
+import useCheckLogin from './hooks/useCheckLogin';
 
 export default function Todo() {
+  const { authenticationToken } = useCheckLogin();
+
+  if (!authenticationToken) return <div />;
+
   return (
     <main className="main-base">
       <article

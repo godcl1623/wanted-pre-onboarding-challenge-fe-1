@@ -1,13 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios, { AxiosInstance } from 'axios';
-
-const BASE_URL = 'http://localhost:8080';
-
-interface GetWithParams {
-  url: string;
-  config: any;
-  callback: any;
-}
+import { BASE_URL } from 'utils/constants';
 
 export class HttpRequest {
   axios: AxiosInstance;
@@ -33,7 +26,7 @@ export class HttpRequest {
     return response;
   }
 
-  async delete(url: string, options: any) {
+  async delete<T>(url: string, options: T) {
     const response = await this.axios.delete(url, options);
     return response;
   }

@@ -2,32 +2,42 @@ import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { updateTodoItem } from 'controllers';
 import { TodoItemType } from 'types';
+import { STORAGED_TOKEN } from 'utils/constants';
 
 export default function ModifyItemDetail() {
   const navigate = useNavigate();
+
   const { state } = useLocation();
-  const authenticationToken = localStorage.getItem('auth');
+
   const itemInfo = state as TodoItemType;
+
+  async function handleSubmit(event: React.FormEvent) {
+    event.preventDefault();
+    const currentForm = event.currentTarget as HTMLFormElement;
+    const titleInput = (currentForm[0] as HTMLInputElement).value;
+    const contentInput = (currentForm[1] as HTMLTextAreaElement).value;
+    const queryString = `title=${titleInput}&content=${contentInput}`;
+    const updateResult = await updateTodoItem(
+      STORAGED_TOKEN,
+      itemInfo.id,
+      queryString,
+    );
+
+    if (updateResult) {
+      alert('수정이 완료됐습니다.');
+      navigate(`/${itemInfo.id}/detail`);
+    }
+  }
+
+  function handleClick() {
+    if (window.confirm('작성을 취소하시겠습니까?')) {
+      navigate(-1);
+    }
+  }
+
   return (
     <article id="details" className="basis-1/2 ml-[0.5%] shadow-lg p-10">
-      <form
-        className="w-full h-full"
-        onSubmit={(event: React.FormEvent) => {
-          event.preventDefault();
-          const currentForm = event.currentTarget as HTMLFormElement;
-          const titleInput = (currentForm[0] as HTMLInputElement).value;
-          const contentInput = (currentForm[1] as HTMLTextAreaElement).value;
-          const queryString = `title=${titleInput}&content=${contentInput}`;
-          updateTodoItem(authenticationToken, itemInfo.id, queryString).then(
-            (result) => {
-              if (result) {
-                alert('수정이 완료됐습니다.');
-                navigate(`/${itemInfo.id}/detail`);
-              }
-            },
-          );
-        }}
-      >
+      <form className="w-full h-full" onSubmit={handleSubmit}>
         <input
           type="text"
           name="title"
@@ -47,11 +57,7 @@ export default function ModifyItemDetail() {
           <button
             type="button"
             className="button-modify w-[70px] ml-5 bg-zinc-400"
-            onClick={() => {
-              if (window.confirm('작성을 취소하시겠습니까?')) {
-                navigate(-1);
-              }
-            }}
+            onClick={handleClick}
           >
             취소
           </button>

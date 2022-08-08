@@ -2,6 +2,7 @@ import React from 'react';
 import { format } from 'date-fns';
 import { NavLink, useParams } from 'react-router-dom';
 import { TodoItemType } from 'types';
+import { isEqual } from 'utils/capsuledConditions';
 
 export default function ListItem({
   id,
@@ -11,19 +12,26 @@ export default function ListItem({
   updatedAt,
 }: TodoItemType) {
   const [isChecked, setIsChecked] = React.useState<boolean>(false);
+
   const params = useParams();
-  const dateString =
-    createdAt === updatedAt
-      ? format(new Date(createdAt), 'yyyy-MM-dd')
-      : format(new Date(updatedAt), 'yyyy-MM-dd');
+
+  const dateString = isEqual(createdAt, updatedAt)
+    ? format(new Date(createdAt), 'yyyy-MM-dd')
+    : format(new Date(updatedAt), 'yyyy-MM-dd');
+
   const checkedString = isChecked ? 'line-through text-zinc-300' : '';
+
+  function handleClick() {
+    setIsChecked(!isChecked);
+  }
+
   return (
-    <li className={`todo-list-item ${params.id === id ? 'active' : ''}`}>
+    <li className={`todo-list-item ${isEqual(params.id, id) ? 'active' : ''}`}>
       {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
       <label
         htmlFor="checkbox"
         className="inline-block w-[40px] h-[40px] border border-solid border-zinc-300 p-[2px] cursor-pointer"
-        onClick={() => setIsChecked(!isChecked)}
+        onClick={handleClick}
       >
         <div
           className={`w-full h-full ${

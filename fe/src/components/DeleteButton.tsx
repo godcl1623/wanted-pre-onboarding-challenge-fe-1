@@ -1,8 +1,9 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { deleteTodoItem } from 'controllers';
+import { STORAGED_TOKEN } from 'utils/constants';
 
-export default function DeleteButton({
+function DeleteButton({
   id,
   additionalStyle,
 }: {
@@ -10,21 +11,25 @@ export default function DeleteButton({
   additionalStyle: string;
 }) {
   const navigate = useNavigate();
-  const authenticationToken = localStorage.getItem('auth');
+
+  function handleClick() {
+    deleteTodoItem(STORAGED_TOKEN, id).then((result) => {
+      if (result) {
+        alert('삭제되었습니다.');
+        navigate('/');
+      }
+    });
+  }
+
   return (
     <button
       type="button"
       className={`button-alert ${additionalStyle}`}
-      onClick={() => {
-        deleteTodoItem(authenticationToken, id).then((result) => {
-          if (result) {
-            alert('삭제되었습니다.');
-            navigate('/');
-          }
-        });
-      }}
+      onClick={handleClick}
     >
       삭제
     </button>
   );
 }
+
+export default React.memo(DeleteButton);

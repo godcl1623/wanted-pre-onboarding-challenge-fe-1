@@ -1,28 +1,34 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createTodoItem } from 'controllers';
+import { STORAGED_TOKEN } from 'utils/constants';
 
 export default function AddItemDetail() {
   const navigate = useNavigate();
-  const authenticationToken = localStorage.getItem('auth');
+
+  async function handleSubmit(event: React.FormEvent) {
+    event.preventDefault();
+    const currentForm = event.currentTarget as HTMLFormElement;
+    const titleInput = (currentForm[0] as HTMLInputElement).value;
+    const contentInput = (currentForm[1] as HTMLTextAreaElement).value;
+    const queryString = `title=${titleInput}&content=${contentInput}`;
+    const createResult = await createTodoItem(STORAGED_TOKEN, queryString);
+
+    if (createResult) {
+      alert('저장이 완료됐습니다.');
+      navigate('/');
+    }
+  }
+
+  function handleClick() {
+    if (window.confirm('작성을 취소하시겠습니까?')) {
+      navigate(-1);
+    }
+  }
+
   return (
     <article id="details" className="basis-1/2 ml-[0.5%] shadow-lg p-10">
-      <form
-        className="w-full h-full"
-        onSubmit={(event: React.FormEvent) => {
-          event.preventDefault();
-          const currentForm = event.currentTarget as HTMLFormElement;
-          const titleInput = (currentForm[0] as HTMLInputElement).value;
-          const contentInput = (currentForm[1] as HTMLTextAreaElement).value;
-          const queryString = `title=${titleInput}&content=${contentInput}`;
-          createTodoItem(authenticationToken, queryString).then((result) => {
-            if (result) {
-              alert('저장이 완료됐습니다.');
-              navigate('/');
-            }
-          });
-        }}
-      >
+      <form className="w-full h-full" onSubmit={handleSubmit}>
         <input
           type="text"
           name="title"
@@ -37,11 +43,7 @@ export default function AddItemDetail() {
           <button
             type="button"
             className="button-modify w-[70px] ml-5 bg-zinc-400"
-            onClick={() => {
-              if (window.confirm('작성을 취소하시겠습니까?')) {
-                navigate(-1);
-              }
-            }}
+            onClick={handleClick}
           >
             취소
           </button>

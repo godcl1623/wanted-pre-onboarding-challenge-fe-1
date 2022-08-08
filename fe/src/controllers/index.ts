@@ -10,10 +10,11 @@ import {
 
 export async function handleLogin(event: React.FormEvent) {
   event.preventDefault();
+  let result = false;
   const formEventTarget = event.target as HTMLFormElement;
   const emailInput = formEventTarget[0] as HTMLInputElement;
   const passwordInput = formEventTarget[1] as HTMLInputElement;
-  let result = false;
+
   try {
     const loginResult = await loginController(
       emailInput.value,
@@ -24,6 +25,7 @@ export async function handleLogin(event: React.FormEvent) {
   } catch (error) {
     alert('로그인 정보가 올바르지 않습니다.');
   }
+
   return result;
 }
 
@@ -33,6 +35,7 @@ export async function handleSignUp(event: React.FormEvent) {
   const formEventTarget = event.target as HTMLFormElement;
   const emailInput = formEventTarget[0] as HTMLInputElement;
   const passwordInput = formEventTarget[1] as HTMLInputElement;
+
   try {
     const signUpResult = await signUpController(
       emailInput.value,
@@ -43,6 +46,7 @@ export async function handleSignUp(event: React.FormEvent) {
   } catch (error) {
     alert('이미 가입된 정보입니다.');
   }
+
   return result;
 }
 
@@ -63,12 +67,14 @@ export async function createTodoItem(
   content: string,
 ) {
   let result = false;
+
   try {
     const response = await createTodo(authenticationToken, content);
     result = true;
   } catch (error) {
     throw new Error(error as string);
   }
+
   return result;
 }
 
@@ -78,13 +84,14 @@ export async function updateTodoItem(
   content: string,
 ) {
   let result = false;
+
   try {
     const response = await updateTodo(authenticationToken, todoId, content);
-    console.log(response);
     result = true;
   } catch (error) {
     throw new Error(error as string);
   }
+
   return result;
 }
 
@@ -93,12 +100,13 @@ export async function deleteTodoItem(
   todoId: string,
 ) {
   let result = false;
+
   try {
     const response = await deleteTodo(authenticationToken, todoId);
-    console.log(response);
     result = true;
   } catch (error) {
     throw new Error(error as string);
   }
+
   return result;
 }

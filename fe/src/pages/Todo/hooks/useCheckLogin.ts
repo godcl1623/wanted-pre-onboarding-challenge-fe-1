@@ -1,10 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { STORAGED_TOKEN } from 'utils/constants';
 
 const useCheckLogin = () => {
-  const [authenticationToken] = React.useState<string | null>(
-    localStorage.getItem('auth'),
-  );
+  const [authenticationToken] = React.useState<string | null>(STORAGED_TOKEN);
+
   const navigate = useNavigate();
 
   React.useEffect(() => {

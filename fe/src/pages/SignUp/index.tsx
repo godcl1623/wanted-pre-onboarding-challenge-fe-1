@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { InputValidState } from 'types';
-import { emailRule, passwordRule } from 'pages/Login/utils';
+import { EMAIL_RULE, PASSWORD_RULE } from 'utils/constants';
 import { handleSignUp } from 'controllers/index';
 import FormInput from 'components/FormInput';
 import FormSubmit from 'components/FormSubmit';
@@ -10,14 +10,16 @@ interface SignUpValidState extends InputValidState {
   passwordCheck: boolean;
 }
 
-export default function SignUp() {
+function SignUp() {
   const [inputValidState, setInputValidState] =
     React.useState<SignUpValidState>({
       email: false,
       password: false,
       passwordCheck: false,
     });
+
   const passwordInput = React.useRef<HTMLInputElement | null>(null);
+
   const navigate = useNavigate();
 
   const checkValidation = (target: string, validationResult: boolean) => {
@@ -35,6 +37,12 @@ export default function SignUp() {
     }
   }
 
+  async function handleClick() {
+    if (window.confirm('회원가입을 취소하시겠습니까?')) {
+      navigate('/auth');
+    }
+  }
+
   return (
     <main className="main-base">
       <form className="form-base p-5" onSubmit={handleSubmit}>
@@ -45,7 +53,7 @@ export default function SignUp() {
           placeholder="ex) abcd@email.com"
           className="login-input-area"
           isValid={inputValidState.email}
-          regexRule={emailRule}
+          regexRule={EMAIL_RULE}
           checkValidation={checkValidation}
         />
         <FormInput
@@ -56,7 +64,7 @@ export default function SignUp() {
           placeholder="비밀번호는 8자리 이상이어야 합니다."
           className="login-input-area"
           isValid={inputValidState.password}
-          regexRule={passwordRule}
+          regexRule={PASSWORD_RULE}
           checkValidation={checkValidation}
         />
         <FormInput
@@ -78,11 +86,7 @@ export default function SignUp() {
           <button
             type="button"
             className="login-area-buttons w-1/3 bg-red-300"
-            onClick={() => {
-              if (window.confirm('회원가입을 취소하시겠습니까?')) {
-                navigate('/auth');
-              }
-            }}
+            onClick={handleClick}
           >
             취소
           </button>
@@ -102,3 +106,5 @@ export default function SignUp() {
     </main>
   );
 }
+
+export default React.memo(SignUp);

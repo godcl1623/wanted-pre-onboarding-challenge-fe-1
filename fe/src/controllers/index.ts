@@ -1,6 +1,12 @@
 import React from 'react';
 import loginController from './loginController';
 import signUpController from './signUpController';
+import {
+  getTodos,
+  createTodo,
+  updateTodo,
+  deleteTodo,
+} from './todoControllers';
 
 export async function handleLogin(event: React.FormEvent) {
   event.preventDefault();
@@ -38,4 +44,56 @@ export async function handleSignUp(event: React.FormEvent) {
     alert('이미 가입된 정보입니다.');
   }
   return result;
+}
+
+export async function getTodoLists(
+  authenticationToken: string | null,
+  todoId = '',
+) {
+  try {
+    const response = await getTodos(authenticationToken, todoId);
+    return response.data;
+  } catch (error) {
+    throw new Error(error as string);
+  }
+}
+
+export async function createTodoItem(
+  authenticationToken: string | null,
+  content: string,
+) {
+  try {
+    const response = await createTodo(authenticationToken, content);
+    console.log(response);
+    return response;
+  } catch (error) {
+    throw new Error(error as string);
+  }
+}
+
+export async function updateTodoItem(
+  authenticationToken: string | null,
+  todoId: string,
+  content: string,
+) {
+  try {
+    const response = await updateTodo(authenticationToken, todoId, content);
+    console.log(response);
+    return response;
+  } catch (error) {
+    throw new Error(error as string);
+  }
+}
+
+export async function deleteTodoItem(
+  authenticationToken: string | null,
+  todoId: string,
+) {
+  try {
+    const response = await deleteTodo(authenticationToken, todoId);
+    console.log(response);
+    return response;
+  } catch (error) {
+    throw new Error(error as string);
+  }
 }

@@ -3,7 +3,7 @@ import { HttpRequest } from 'api/httpRequest';
 const httpRequest = new HttpRequest();
 
 export const getTodos = async (token: string | null, todoId = '') => {
-  const queryString = todoId && `:${todoId}`;
+  const queryString = todoId && `/${todoId}`;
   try {
     const response = await httpRequest.get(`/todos${queryString}`, {
       headers: { Authorization: token },

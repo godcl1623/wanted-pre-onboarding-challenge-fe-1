@@ -143,12 +143,17 @@
     @apply mb-10;
   }
 
+  .active {
+    @apply brightness-75;
+  }
+
   .todo-list-item {
     @apply todo-list-item-base;
     @apply rounded-lg;
     @apply shadow-lg;
     @apply p-3;
     @apply bg-white;
+    @apply cursor-pointer;
   }
 
   .todo-list-add {

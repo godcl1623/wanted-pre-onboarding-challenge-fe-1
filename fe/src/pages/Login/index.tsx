@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { InputValidState } from 'types';
+import { EMAIL_RULE, PASSWORD_RULE } from 'utils/constants';
 import FormInput from 'components/FormInput';
 import FormSubmit from 'components/FormSubmit';
 import { handleLogin } from '../../controllers';
-import { emailRule, passwordRule } from './utils';
 
 function Login() {
   const [inputValidState, setInputValidState] = React.useState<InputValidState>(
@@ -13,6 +13,7 @@ function Login() {
       password: false,
     },
   );
+
   const navigate = useNavigate();
 
   const checkValidation = (target: string, validationResult: boolean) => {
@@ -22,13 +23,12 @@ function Login() {
     }));
   };
 
-  function handleSubmit(event: React.FormEvent) {
-    handleLogin(event).then((loginResult: boolean) => {
-      if (loginResult) {
-        alert('로그인 되었습니다.');
-        navigate('/');
-      }
-    });
+  async function handleSubmit(event: React.FormEvent) {
+    const loginResult = await handleLogin(event);
+    if (loginResult) {
+      alert('로그인 되었습니다.');
+      navigate('/');
+    }
   }
 
   return (
@@ -41,7 +41,7 @@ function Login() {
           placeholder="ex) abcd@email.com"
           className="login-input-area"
           isValid={inputValidState.email}
-          regexRule={emailRule}
+          regexRule={EMAIL_RULE}
           checkValidation={checkValidation}
         />
         <FormInput
@@ -51,7 +51,7 @@ function Login() {
           placeholder="8자리 이상"
           className="login-input-area"
           isValid={inputValidState.password}
-          regexRule={passwordRule}
+          regexRule={PASSWORD_RULE}
           checkValidation={checkValidation}
         />
         <div className="flex-center flex-col w-full py-5">

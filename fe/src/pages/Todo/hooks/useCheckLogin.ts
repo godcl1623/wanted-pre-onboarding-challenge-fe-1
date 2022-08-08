@@ -5,6 +5,7 @@ const useCheckLogin = () => {
   const [authenticationToken] = React.useState<string | null>(
     localStorage.getItem('auth'),
   );
+
   const navigate = useNavigate();
 
   React.useEffect(() => {

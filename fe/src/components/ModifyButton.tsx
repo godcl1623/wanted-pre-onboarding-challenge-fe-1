@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ButtonProps } from 'types';
 
-export default function ModifyButton({
+function ModifyButton({
   id,
   title,
   content,
@@ -11,17 +11,22 @@ export default function ModifyButton({
   additionalStyle,
 }: ButtonProps) {
   const navigate = useNavigate();
+
+  function handleClick() {
+    navigate(`/${id}/modify`, {
+      state: { id, title, content, createdAt, updatedAt },
+    });
+  }
+
   return (
     <button
       type="button"
       className={`button-modify ${additionalStyle}`}
-      onClick={() =>
-        navigate(`/${id}/modify`, {
-          state: { id, title, content, createdAt, updatedAt },
-        })
-      }
+      onClick={handleClick}
     >
       수정
     </button>
   );
 }
+
+export default React.memo(ModifyButton);

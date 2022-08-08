@@ -6,9 +6,11 @@ import ListItem from './components/ListItem';
 import AddItemButton from './components/AddItemButton';
 import useCheckLogin from './hooks/useCheckLogin';
 
-export default function Todo() {
+function Todo() {
   const [todoList, setTodoList] = React.useState<TodoItemType[]>([]);
+
   const location = useLocation();
+
   const { authenticationToken } = useCheckLogin();
 
   React.useEffect(() => {
@@ -52,3 +54,5 @@ export default function Todo() {
     </main>
   );
 }
+
+export default React.memo(Todo);

@@ -1,4 +1,5 @@
 import React from 'react';
+import { isEqual, isFrontBiggerThanRear } from 'utils/capsuledConditions';
 
 interface FormInputProps {
   type: string;
@@ -23,12 +24,15 @@ const FormInput = React.forwardRef<HTMLInputElement, FormInputProps>(
       checkValidation,
       regexRule,
     } = props;
+
     const inputValueCount = React.useRef<number>(0);
-    const validationResult =
-      name === 'passwordCheck'
-        ? '비밀번호가 일치하지 않습니다.'
-        : '입력한 값이 형식과 맞지 않습니다.';
-    const validationCondition = inputValueCount.current > 0 && !isValid;
+
+    const validationResult = isEqual(name, 'passwordCheck')
+      ? '비밀번호가 일치하지 않습니다.'
+      : '입력한 값이 형식과 맞지 않습니다.';
+
+    const validationCondition =
+      isFrontBiggerThanRear(inputValueCount.current, 0) && !isValid;
 
     function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
       const regexResult = (regexRule as RegExp).test(event.currentTarget.value);
@@ -61,4 +65,4 @@ const FormInput = React.forwardRef<HTMLInputElement, FormInputProps>(
   },
 );
 
-export default FormInput;
+export default React.memo(FormInput);

@@ -6,7 +6,7 @@ interface FormSubmitProps {
   value: string;
 }
 
-export default function FormSubmit({
+function FormSubmit({
   disableCondition,
   additionalStyles,
   value,
@@ -25,3 +25,5 @@ export default function FormSubmit({
     />
   );
 }
+
+export default React.memo(FormSubmit);

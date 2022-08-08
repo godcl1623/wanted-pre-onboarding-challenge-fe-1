@@ -9,7 +9,7 @@ import AddItemDetail from 'pages/Todo/components/AddItemDetail';
 import ModifyItemDetail from 'pages/Todo/components/ModifyItemDetail';
 import Path from './Path';
 
-export default function Routing() {
+function Routing() {
   return (
     <Router>
       <Routes>
@@ -25,3 +25,5 @@ export default function Routing() {
     </Router>
   );
 }
+
+export default React.memo(Routing);

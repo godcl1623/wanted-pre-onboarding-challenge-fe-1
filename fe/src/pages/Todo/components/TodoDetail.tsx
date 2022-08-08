@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { format } from 'date-fns';
 import { getTodoLists } from 'controllers';
 import { TodoItemType } from 'types';
+import DetailBaseForm from './DetailBaseForm';
 
 export default function TodoDetail() {
   const [itemInfo, setItemInfo] = React.useState<TodoItemType | any>({
@@ -16,6 +17,10 @@ export default function TodoDetail() {
   const formatter = (dateString: string) => {
     return format(new Date(dateString), 'yyyy-MM-dd HH:mm:ss');
   };
+  const shortenedTitle =
+    itemInfo.title.length <= 5
+      ? itemInfo.title
+      : itemInfo.title.slice(0, 4).concat('...');
   React.useEffect(() => {
     getTodoLists(authenticationToken, param.id).then((result) => {
       setItemInfo((previousInfo: TodoItemType) => ({
@@ -28,37 +33,13 @@ export default function TodoDetail() {
       }));
     });
   }, [param]);
-  const shortenedTitle =
-    itemInfo.title.length <= 5
-      ? itemInfo.title
-      : itemInfo.title.slice(0, 4).concat('...');
+
   return (
-    <article id="details" className="basis-1/2 ml-[0.5%] shadow-lg p-10">
-      <h1 className="h-[10%] px-5 text-6xl">{shortenedTitle}</h1>
-      <hr className="my-[3%] border border-solid" />
-      <section className="h-[74%] px-5 py-3">
-        <h1 className="mb-3 font-bold text-3xl">{shortenedTitle}</h1>
-        <p className="flex items-center h-[30px] mb-3 px-3">
-          {itemInfo.content}
-        </p>
-      </section>
-      <p className="my-1 text-end text-zinc-400">
-        작성일: {formatter(itemInfo.createdAt)}
-      </p>
-      <p className="my-1 text-end text-zinc-400">
-        수정일: {formatter(itemInfo.updatedAt)}
-      </p>
-      {itemInfo.createdAt !== itemInfo.updatedAt && (
-        <p>수정일: {formatter(itemInfo.updatedAt)}</p>
-      )}
-      <section className="flex justify-end h-[5%] mt-3">
-        <button type="button" className="button-modify w-[70px] ml-5">
-          수정
-        </button>
-        <button type="button" className="button-alert w-[70px] ml-5">
-          삭제
-        </button>
-      </section>
-    </article>
+    <DetailBaseForm
+      title={shortenedTitle}
+      content={itemInfo.content}
+      createdAt={formatter(itemInfo.createdAt)}
+      updatedAt={formatter(itemInfo.updatedAt)}
+    />
   );
 }

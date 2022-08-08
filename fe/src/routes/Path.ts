@@ -3,6 +3,7 @@ enum Path {
   Auth = '/auth',
   SignUp = '/signup',
   Detail = '/:id/detail',
+  Add = '/add',
 }
 
 export default Path;

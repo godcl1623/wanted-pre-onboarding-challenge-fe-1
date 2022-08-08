@@ -1,17 +1,19 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import { getTodoLists } from 'controllers';
 import { TodoItemType } from 'types';
 import ListItem from './components/ListItem';
+import AddItemButton from './components/AddItemButton';
 import useCheckLogin from './hooks/useCheckLogin';
 
 export default function Todo() {
   const [todoList, setTodoList] = React.useState<TodoItemType[]>([]);
+  const location = useLocation();
   const { authenticationToken } = useCheckLogin();
 
   React.useEffect(() => {
     getTodoLists(authenticationToken).then((res) => setTodoList(res));
-  }, []);
+  }, [location.pathname]);
 
   if (!authenticationToken) return <div />;
 
@@ -42,9 +44,7 @@ export default function Todo() {
         >
           <ul>
             {todoItemsList}
-            <li className="flex-center todo-list-item-base">
-              <span className="todo-list-add">+</span>
-            </li>
+            <AddItemButton />
           </ul>
         </article>
         <Outlet />

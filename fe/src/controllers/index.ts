@@ -62,13 +62,14 @@ export async function createTodoItem(
   authenticationToken: string | null,
   content: string,
 ) {
+  let result = false;
   try {
     const response = await createTodo(authenticationToken, content);
-    console.log(response);
-    return response;
+    result = true;
   } catch (error) {
     throw new Error(error as string);
   }
+  return result;
 }
 
 export async function updateTodoItem(

@@ -1,6 +1,6 @@
 import { HttpRequest } from 'api/httpRequest';
 
-const loginController = async (emailValue: string, passwordValue: string) => {
+const signUpController = async (emailValue: string, passwordValue: string) => {
   const httpRequest = new HttpRequest();
 
   try {
@@ -14,4 +14,4 @@ const loginController = async (emailValue: string, passwordValue: string) => {
   }
 };
 
-export default loginController;
+export default signUpController;

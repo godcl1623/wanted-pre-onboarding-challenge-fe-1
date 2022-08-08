@@ -5,9 +5,11 @@ import { STORAGED_TOKEN } from 'utils/constants';
 
 function DeleteButton({
   id,
+  title,
   additionalStyle,
 }: {
   id: string;
+  title: string;
   additionalStyle: string;
 }) {
   const navigate = useNavigate();
@@ -15,6 +17,7 @@ function DeleteButton({
   function handleClick() {
     deleteTodoItem(STORAGED_TOKEN, id).then((result) => {
       if (result) {
+        localStorage.removeItem(title);
         alert('삭제되었습니다.');
         navigate('/');
       }

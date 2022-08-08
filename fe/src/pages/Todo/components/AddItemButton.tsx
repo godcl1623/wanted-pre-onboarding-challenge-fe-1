@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-export default function AddItemButton() {
+function AddItemButton() {
   const navigate = useNavigate();
 
   function handleClick() {
@@ -16,3 +16,5 @@ export default function AddItemButton() {
     </li>
   );
 }
+
+export default React.memo(AddItemButton);

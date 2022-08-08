@@ -16,7 +16,7 @@ interface BasicType {
   updatedAt: string;
 }
 
-export default function TodoDetail() {
+function TodoDetail() {
   const [itemInfo, setItemInfo] = React.useState<TodoItemType | BasicType>({
     id: '',
     title: '',
@@ -57,16 +57,15 @@ export default function TodoDetail() {
       <h1 className="h-[10%] px-5 text-6xl">{shortenedTitle}</h1>
       <hr className="my-[3%] border border-solid" />
       <section className="h-[74%] px-5 py-3">
-        <h1 className="mb-5 font-bold text-3xl">{shortenedTitle}</h1>
+        <h1 className="mb-5 font-bold text-3xl">{itemInfo.title}</h1>
         {contents}
       </section>
       <p className="my-1 text-end text-zinc-400">
-        작성일: {formatDate(itemInfo.createdAt)}
+        작성일: {formatDate(itemInfo.createdAt, true)}
       </p>
-      {!isEqual(
-        formatDate(itemInfo.createdAt),
-        formatDate(itemInfo.updatedAt),
-      ) && <p>수정일: {formatDate(itemInfo.updatedAt)}</p>}
+      {!isEqual(itemInfo.createdAt, itemInfo.updatedAt) && (
+        <p>수정일: {formatDate(itemInfo.updatedAt, true)}</p>
+      )}
       <section className="flex justify-end h-[5%] mt-3">
         <ModifyButton
           id={itemInfo.id}
@@ -76,8 +75,14 @@ export default function TodoDetail() {
           updatedAt={itemInfo.updatedAt}
           additionalStyle="w-[70px] ml-5"
         />
-        <DeleteButton id={itemInfo.id} additionalStyle="w-[70px] ml-5" />
+        <DeleteButton
+          id={itemInfo.id}
+          title={itemInfo.title}
+          additionalStyle="w-[70px] ml-5"
+        />
       </section>
     </article>
   );
 }
+
+export default React.memo(TodoDetail);

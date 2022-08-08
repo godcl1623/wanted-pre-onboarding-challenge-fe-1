@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { createTodoItem } from 'controllers';
 import { STORAGED_TOKEN } from 'utils/constants';
 
-export default function AddItemDetail() {
+function AddItemDetail() {
   const navigate = useNavigate();
 
   async function handleSubmit(event: React.FormEvent) {
@@ -57,3 +57,5 @@ export default function AddItemDetail() {
     </article>
   );
 }
+
+export default React.memo(AddItemDetail);

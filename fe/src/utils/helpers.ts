@@ -11,12 +11,13 @@ export const returnAlertMessage = (locationString: string) => {
   }
 };
 
-export const formatDate = (dateString: string) => {
-  return format(new Date(dateString), 'yyyy-MM-dd HH:mm:ss');
+export const formatDate = (dateString: string, withTime = false) => {
+  const dateFormat = withTime ? 'yyyy-MM-dd HH:mm:ss' : 'yyyy-MM-dd';
+  return format(new Date(dateString), dateFormat);
 };
 
 export const shortenString = (stringToShorten: string) => {
   return stringToShorten.length <= 5
     ? stringToShorten
-    : stringToShorten.slice(0, 4).concat('...');
+    : stringToShorten.slice(0, 5).concat('...');
 };

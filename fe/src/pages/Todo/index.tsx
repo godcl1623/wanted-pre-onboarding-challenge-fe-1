@@ -1,4 +1,11 @@
 import React from 'react';
+import axios from 'axios';
+import {
+  getTodos,
+  createTodo,
+  updateTodo,
+  deleteTodo,
+} from 'controllers/todoControllers';
 import ListItem from './components/ListItem';
 import useCheckLogin from './hooks/useCheckLogin';
 
@@ -7,8 +14,68 @@ export default function Todo() {
 
   if (!authenticationToken) return <div />;
 
+  async function getFoo() {
+    const bar = await getTodos(authenticationToken);
+    console.log(bar);
+  }
+
+  async function createFoo() {
+    const bar = await createTodo(authenticationToken, 'title=foo&content=bar');
+    console.log(bar);
+  }
+
+  async function updateFoo() {
+    const bar = await updateTodo(
+      authenticationToken,
+      'qwerty',
+      'title=bar&content=foo',
+    );
+    console.log(bar);
+  }
+
+  async function deleteFoo() {
+    const bar = await deleteTodo(authenticationToken, 'qwerty');
+    console.log(bar);
+  }
+
   return (
     <main className="main-base">
+      <button
+        type="button"
+        className="button-alert"
+        onClick={() => {
+          getFoo();
+        }}
+      >
+        get
+      </button>
+      <button
+        type="button"
+        className="button-alert"
+        onClick={() => {
+          createFoo();
+        }}
+      >
+        create
+      </button>
+      <button
+        type="button"
+        className="button-alert"
+        onClick={() => {
+          updateFoo();
+        }}
+      >
+        update
+      </button>
+      <button
+        type="button"
+        className="button-alert"
+        onClick={() => {
+          deleteFoo();
+        }}
+      >
+        delete
+      </button>
       <article
         id="todo_container"
         className="flex w-[60%] h-[75%] rounded-2xl bg-slate-50"

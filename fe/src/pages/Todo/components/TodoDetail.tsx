@@ -4,6 +4,7 @@ import { format } from 'date-fns';
 import { getTodoLists } from 'controllers';
 import { TodoItemType } from 'types';
 import ModifyButton from 'components/ModifyButton';
+import DeleteButton from 'components/DeleteButton';
 
 export default function TodoDetail() {
   const [itemInfo, setItemInfo] = React.useState<TodoItemType | any>({
@@ -64,10 +65,9 @@ export default function TodoDetail() {
           content={itemInfo.content}
           createdAt={itemInfo.createdAt}
           updatedAt={itemInfo.updatedAt}
+          additionalStyle="w-[70px] ml-5"
         />
-        <button type="button" className="button-alert w-[70px] ml-5">
-          삭제
-        </button>
+        <DeleteButton id={itemInfo.id} additionalStyle="w-[70px] ml-5" />
       </section>
     </article>
   );

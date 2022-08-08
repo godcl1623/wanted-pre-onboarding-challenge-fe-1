@@ -92,11 +92,13 @@ export async function deleteTodoItem(
   authenticationToken: string | null,
   todoId: string,
 ) {
+  let result = false;
   try {
     const response = await deleteTodo(authenticationToken, todoId);
     console.log(response);
-    return response;
+    result = true;
   } catch (error) {
     throw new Error(error as string);
   }
+  return result;
 }

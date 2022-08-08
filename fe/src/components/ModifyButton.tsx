@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { TodoItemType } from 'types';
+import { ButtonProps } from 'types';
 
 export default function ModifyButton({
   id,
@@ -8,12 +8,13 @@ export default function ModifyButton({
   content,
   createdAt,
   updatedAt,
-}: TodoItemType) {
+  additionalStyle,
+}: ButtonProps) {
   const navigate = useNavigate();
   return (
     <button
       type="button"
-      className="button-modify"
+      className={`button-modify ${additionalStyle}`}
       onClick={() =>
         navigate(`/${id}/modify`, {
           state: { id, title, content, createdAt, updatedAt },

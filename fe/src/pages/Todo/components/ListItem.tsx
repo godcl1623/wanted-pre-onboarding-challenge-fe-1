@@ -1,6 +1,17 @@
 import React from 'react';
+import { format } from 'date-fns';
 
-export default function ListItem() {
+export default function ListItem({
+  id,
+  title,
+  content,
+  created,
+  updated,
+}: any) {
+  const dateString =
+    created === updated
+      ? format(new Date(created), 'yyyy-MM-dd')
+      : format(new Date(updated), 'yyyy-MM-dd');
   return (
     <li className="todo-list-item">
       <label
@@ -11,11 +22,11 @@ export default function ListItem() {
         <input type="checkbox" name="checkbox" className="hidden" />
       </label>
       <section className="w-[60%] h-full">
-        <h1 className="h-1/2 py-2 px-3 text-3xl">제목</h1>
-        <p className="h-1/2 py-2 px-3 text-zinc-400">내용</p>
+        <h1 className="h-1/2 py-2 px-3 text-3xl">{title}</h1>
+        <p className="h-1/2 py-2 px-3 text-zinc-400">{content}</p>
       </section>
       <section className="w-[30%] h-full">
-        <p className="flex-center h-1/2 pb-1 text-zinc-400">2022-08-07</p>
+        <p className="flex-center h-1/2 pb-1 text-zinc-400">{dateString}</p>
         <div className="flex-center justify-evenly h-1/2">
           <button type="button" className="button-modify">
             수정

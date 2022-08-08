@@ -10,17 +10,19 @@ import ListItem from './components/ListItem';
 import useCheckLogin from './hooks/useCheckLogin';
 
 export default function Todo() {
+  const [todoList, setTodoList] = React.useState<any>([]);
   const { authenticationToken } = useCheckLogin();
-
-  if (!authenticationToken) return <div />;
 
   async function getFoo() {
     const bar = await getTodos(authenticationToken);
-    console.log(bar);
+    return bar.data;
   }
 
   async function createFoo() {
-    const bar = await createTodo(authenticationToken, 'title=foo&content=bar');
+    const bar = await createTodo(
+      authenticationToken,
+      'title=잘있어요&content=다시만나요',
+    );
     console.log(bar);
   }
 
@@ -38,44 +40,31 @@ export default function Todo() {
     console.log(bar);
   }
 
+  React.useEffect(() => {
+    getFoo().then((res) => setTodoList(res));
+  }, []);
+
+  React.useEffect(() => {
+    console.log(todoList);
+  }, [todoList]);
+
+  if (!authenticationToken) return <div />;
+
+  const doh = todoList.map((todoItem: any, index: number) => {
+    return (
+      <ListItem
+        id={todoItem.id}
+        title={todoItem.title}
+        content={todoItem.content}
+        created={todoItem.createdAt}
+        updated={todoItem.updatedAt}
+        key={index}
+      />
+    );
+  });
+
   return (
     <main className="main-base">
-      <button
-        type="button"
-        className="button-alert"
-        onClick={() => {
-          getFoo();
-        }}
-      >
-        get
-      </button>
-      <button
-        type="button"
-        className="button-alert"
-        onClick={() => {
-          createFoo();
-        }}
-      >
-        create
-      </button>
-      <button
-        type="button"
-        className="button-alert"
-        onClick={() => {
-          updateFoo();
-        }}
-      >
-        update
-      </button>
-      <button
-        type="button"
-        className="button-alert"
-        onClick={() => {
-          deleteFoo();
-        }}
-      >
-        delete
-      </button>
       <article
         id="todo_container"
         className="flex w-[60%] h-[75%] rounded-2xl bg-slate-50"
@@ -85,12 +74,7 @@ export default function Todo() {
           className="basis-1/2 shadow-lg p-10 overflow-y-auto"
         >
           <ul>
-            <ListItem />
-            <ListItem />
-            <ListItem />
-            {/* <ListItem /> */}
-            {/* <ListItem /> */}
-            {/* <ListItem /> */}
+            {doh}
             <li className="flex-center todo-list-item-base">
               <span className="todo-list-add">+</span>
             </li>

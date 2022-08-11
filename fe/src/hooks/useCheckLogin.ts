@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import Path from 'routes/Path';
 
 const useCheckLogin = () => {
   const [authenticationToken] = React.useState<string | null>(
@@ -11,7 +12,7 @@ const useCheckLogin = () => {
   React.useEffect(() => {
     if (!authenticationToken) {
       alert('로그인이 필요합니다.');
-      navigate('/auth');
+      navigate(Path.Auth);
     }
   }, [authenticationToken]);
 

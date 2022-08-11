@@ -1,11 +1,12 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import Path from 'routes/Path';
 
 function AddItemButton() {
   const navigate = useNavigate();
 
   function handleClick() {
-    navigate('new');
+    navigate(Path.Add);
   }
 
   return (

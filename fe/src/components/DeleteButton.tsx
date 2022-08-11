@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { deleteTodoItem } from 'controllers';
 import { STORAGED_TOKEN } from 'utils/constants';
+import Path from 'routes/Path';
 
 function DeleteButton({
   id,
@@ -19,7 +20,7 @@ function DeleteButton({
       if (result) {
         localStorage.removeItem(title);
         alert('삭제되었습니다.');
-        navigate('/items');
+        navigate(Path.Items);
       }
     });
   }

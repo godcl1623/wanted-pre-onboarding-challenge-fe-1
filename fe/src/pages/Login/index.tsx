@@ -2,6 +2,8 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { InputValidState } from 'types';
 import { EMAIL_RULE, PASSWORD_RULE } from 'utils/constants';
+import Path from 'routes/Path';
+import useCheckLogin from 'hooks/useCheckLogin';
 import FormInput from 'components/FormInput';
 import FormSubmit from 'components/FormSubmit';
 import { handleLogin } from '../../controllers';
@@ -16,6 +18,8 @@ function Login() {
 
   const navigate = useNavigate();
 
+  const { authenticationToken } = useCheckLogin();
+
   const checkValidation = (target: string, validationResult: boolean) => {
     setInputValidState((previousState: InputValidState) => ({
       ...previousState,
@@ -27,9 +31,15 @@ function Login() {
     const loginResult = await handleLogin(event);
     if (loginResult) {
       alert('로그인 되었습니다.');
-      navigate('/');
+      navigate(Path.Items);
     }
   }
+
+  React.useEffect(() => {
+    if (authenticationToken) {
+      navigate(Path.Items);
+    }
+  }, [authenticationToken]);
 
   return (
     <main className="main-base">

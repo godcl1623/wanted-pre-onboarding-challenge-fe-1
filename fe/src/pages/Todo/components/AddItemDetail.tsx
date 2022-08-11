@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createTodoItem } from 'controllers';
 import { STORAGED_TOKEN } from 'utils/constants';
+import Path from 'routes/Path';
 
 function AddItemDetail() {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ function AddItemDetail() {
 
     if (createResult) {
       alert('저장이 완료됐습니다.');
-      navigate('/items');
+      navigate(Path.Items);
     }
   }
 

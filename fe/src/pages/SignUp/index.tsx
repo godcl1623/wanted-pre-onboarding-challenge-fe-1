@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { InputValidState } from 'types';
 import { EMAIL_RULE, PASSWORD_RULE } from 'utils/constants';
+import Path from 'routes/Path';
 import { handleSignUp } from 'controllers/index';
 import FormInput from 'components/FormInput';
 import FormSubmit from 'components/FormSubmit';
@@ -33,13 +34,13 @@ function SignUp() {
     const signUpResult = await handleSignUp(event);
     if (signUpResult) {
       alert('회원가입이 완료되었습니다.');
-      navigate('/');
+      navigate(Path.Root);
     }
   }
 
   async function handleClick() {
     if (window.confirm('회원가입을 취소하시겠습니까?')) {
-      navigate('/auth');
+      navigate(Path.Auth);
     }
   }
 

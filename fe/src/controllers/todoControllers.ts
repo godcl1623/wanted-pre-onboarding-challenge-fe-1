@@ -1,12 +1,12 @@
-import { HttpRequest } from 'api/httpRequest';
+import communicateServerBy from 'api/communicateServerBy';
 
-const httpRequest = new HttpRequest();
+const { getData, postData, putData, deleteData } = communicateServerBy();
 
 export const getTodos = async (token: string | null, todoId = '') => {
   const queryString = todoId && `/${todoId}`;
 
   try {
-    const response = await httpRequest.get(`/todos${queryString}`, {
+    const response = await getData(`/todos${queryString}`, {
       headers: { Authorization: token },
     });
     return response.data;
@@ -17,7 +17,7 @@ export const getTodos = async (token: string | null, todoId = '') => {
 
 export const createTodo = async (token: string | null, todoContent: string) => {
   try {
-    const response = await httpRequest.post('/todos', todoContent, {
+    const response = await postData('/todos', todoContent, {
       headers: { Authorization: token },
     });
     return response;
@@ -32,7 +32,7 @@ export const updateTodo = async (
   todoContent: string,
 ) => {
   try {
-    const response = await httpRequest.put(`/todos/${todoId}`, todoContent, {
+    const response = await putData(`/todos/${todoId}`, todoContent, {
       headers: {
         Authorization: token,
       },
@@ -45,7 +45,7 @@ export const updateTodo = async (
 
 export const deleteTodo = async (token: string | null, todoId: string) => {
   try {
-    const response = await httpRequest.delete(`/todos/${todoId}`, {
+    const response = await deleteData(`/todos/${todoId}`, {
       headers: {
         Authorization: token,
       },

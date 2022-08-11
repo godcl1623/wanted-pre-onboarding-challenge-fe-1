@@ -1,10 +1,10 @@
-import { HttpRequest } from 'api/httpRequest';
+import communicateServerBy from 'api/communicateServerBy';
 
 const signUpController = async (emailValue: string, passwordValue: string) => {
-  const httpRequest = new HttpRequest();
+  const { postData } = communicateServerBy();
 
   try {
-    const response = await httpRequest.post<string, string>(
+    const response = await postData<string, string>(
       '/users/create',
       `email=${emailValue}&password=${passwordValue}`,
     );

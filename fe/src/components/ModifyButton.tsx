@@ -13,7 +13,7 @@ function ModifyButton({
   const navigate = useNavigate();
 
   function handleClick() {
-    navigate(`/${id}/modify`, {
+    navigate(`/items/${id}/modify`, {
       state: { id, title, content, createdAt, updatedAt },
     });
   }

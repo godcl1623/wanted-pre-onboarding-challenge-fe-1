@@ -50,7 +50,7 @@ function ListItem({ id, title, content, createdAt, updatedAt }: TodoItemType) {
           onChange={() => undefined}
         />
       </label>
-      <NavLink to={`/${id}/detail`} className="flex items-center w-full h-full">
+      <NavLink to={`${id}`} className="flex items-center w-full h-full">
         <section className="w-[65%] h-full">
           <h1 className={`h-1/2 py-2 px-3 text-3xl ${checkedString}`}>
             {shortenString(title)}

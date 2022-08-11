@@ -16,7 +16,7 @@ function AddItemDetail() {
 
     if (createResult) {
       alert('저장이 완료됐습니다.');
-      navigate('/');
+      navigate('/items');
     }
   }
 

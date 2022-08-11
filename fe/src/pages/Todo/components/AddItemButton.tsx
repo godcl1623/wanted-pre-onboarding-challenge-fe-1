@@ -5,7 +5,7 @@ function AddItemButton() {
   const navigate = useNavigate();
 
   function handleClick() {
-    navigate('/add');
+    navigate('new');
   }
 
   return (

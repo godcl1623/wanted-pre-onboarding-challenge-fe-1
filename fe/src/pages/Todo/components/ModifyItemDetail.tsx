@@ -25,7 +25,7 @@ function ModifyItemDetail() {
 
     if (updateResult) {
       alert('수정이 완료됐습니다.');
-      navigate(`/${itemInfo.id}/detail`);
+      navigate(`/items/${itemInfo.id}`);
     }
   }
 

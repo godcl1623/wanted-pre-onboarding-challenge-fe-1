@@ -19,7 +19,7 @@ function DeleteButton({
       if (result) {
         localStorage.removeItem(title);
         alert('삭제되었습니다.');
-        navigate('/');
+        navigate('/items');
       }
     });
   }

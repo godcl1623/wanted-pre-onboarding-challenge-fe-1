@@ -1,22 +1,18 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import Path from 'routes/Path';
+import { STORAGED_TOKEN } from 'utils/constants';
 
 const useCheckLogin = () => {
-  const [authenticationToken] = React.useState<string | null>(
-    localStorage.getItem('auth'),
-  );
-
-  const navigate = useNavigate();
+  const [isTokenAvailable, setTokenAvailable] = React.useState<boolean>(false);
 
   React.useEffect(() => {
-    if (!authenticationToken) {
-      alert('로그인이 필요합니다.');
-      navigate(Path.Auth);
+    if (!STORAGED_TOKEN) {
+      setTokenAvailable(false);
+    } else {
+      setTokenAvailable(true);
     }
-  }, [authenticationToken]);
+  }, []);
 
-  return { authenticationToken };
+  return { isTokenAvailable };
 };
 
 export default useCheckLogin;

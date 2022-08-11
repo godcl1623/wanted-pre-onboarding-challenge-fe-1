@@ -4,7 +4,7 @@ import { updateTodoItem } from 'controllers';
 import { TodoItemType } from 'types';
 import { STORAGED_TOKEN } from 'utils/constants';
 
-function ModifyItemDetail() {
+function ItemModifyContainer() {
   const navigate = useNavigate();
 
   const { state } = useLocation();
@@ -72,4 +72,4 @@ function ModifyItemDetail() {
   );
 }
 
-export default React.memo(ModifyItemDetail);
+export default React.memo(ItemModifyContainer);

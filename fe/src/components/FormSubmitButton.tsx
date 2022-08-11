@@ -1,16 +1,16 @@
 import React from 'react';
 
-interface FormSubmitProps {
+interface FormSubmitButtonProps {
   disableCondition: boolean;
   additionalStyles?: string;
   value: string;
 }
 
-function FormSubmit({
+function FormSubmitButton({
   disableCondition,
   additionalStyles,
   value,
-}: FormSubmitProps) {
+}: FormSubmitButtonProps) {
   return (
     <input
       type="submit"
@@ -26,4 +26,4 @@ function FormSubmit({
   );
 }
 
-export default React.memo(FormSubmit);
+export default React.memo(FormSubmitButton);

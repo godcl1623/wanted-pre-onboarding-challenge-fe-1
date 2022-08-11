@@ -1,7 +1,7 @@
-import communicateServerBy from 'api/communicateServerBy';
+import returnApis from 'api/returnApis';
 
 const loginController = async (emailValue: string, passwordValue: string) => {
-  const { postData } = communicateServerBy();
+  const { postData } = returnApis();
 
   try {
     const response = await postData<string, string>(

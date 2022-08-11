@@ -5,7 +5,7 @@ import { EMAIL_RULE, PASSWORD_RULE } from 'utils/constants';
 import Path from 'routes/Path';
 import { handleSignUp } from 'controllers/index';
 import FormInput from 'components/FormInput';
-import FormSubmit from 'components/FormSubmit';
+import FormSubmitButton from 'components/FormSubmitButton';
 
 interface SignUpValidState extends InputValidState {
   passwordCheck: boolean;
@@ -91,7 +91,7 @@ function SignUp() {
           >
             취소
           </button>
-          <FormSubmit
+          <FormSubmitButton
             disableCondition={
               !(
                 inputValidState.email &&

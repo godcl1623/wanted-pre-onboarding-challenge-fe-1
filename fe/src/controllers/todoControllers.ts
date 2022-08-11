@@ -1,8 +1,10 @@
-import communicateServerBy from 'api/communicateServerBy';
+import returnApis from 'api/returnApis';
 
-const { getData, postData, putData, deleteData } = communicateServerBy();
+type TokenType = string | null;
 
-export const getTodos = async (token: string | null, todoId = '') => {
+const { getData, postData, putData, deleteData } = returnApis();
+
+export const getTodos = async (token: TokenType, todoId = '') => {
   const queryString = todoId && `/${todoId}`;
 
   try {
@@ -15,9 +17,9 @@ export const getTodos = async (token: string | null, todoId = '') => {
   }
 };
 
-export const createTodo = async (token: string | null, todoContent: string) => {
+export const createTodo = async (token: TokenType, todoItemContent: string) => {
   try {
-    const response = await postData('/todos', todoContent, {
+    const response = await postData('/todos', todoItemContent, {
       headers: { Authorization: token },
     });
     return response;
@@ -27,12 +29,12 @@ export const createTodo = async (token: string | null, todoContent: string) => {
 };
 
 export const updateTodo = async (
-  token: string | null,
-  todoId: string | number,
-  todoContent: string,
+  token: TokenType,
+  todoId: string,
+  todoItemContent: string,
 ) => {
   try {
-    const response = await putData(`/todos/${todoId}`, todoContent, {
+    const response = await putData(`/todos/${todoId}`, todoItemContent, {
       headers: {
         Authorization: token,
       },
@@ -43,7 +45,7 @@ export const updateTodo = async (
   }
 };
 
-export const deleteTodo = async (token: string | null, todoId: string) => {
+export const deleteTodo = async (token: TokenType, todoId: string) => {
   try {
     const response = await deleteData(`/todos/${todoId}`, {
       headers: {

@@ -4,7 +4,7 @@ import { createTodoItem } from 'controllers';
 import { STORAGED_TOKEN } from 'utils/constants';
 import Path from 'routes/Path';
 
-function AddItemDetail() {
+function ItemAddContainer() {
   const navigate = useNavigate();
 
   async function handleSubmit(event: React.FormEvent) {
@@ -59,4 +59,4 @@ function AddItemDetail() {
   );
 }
 
-export default React.memo(AddItemDetail);
+export default React.memo(ItemAddContainer);

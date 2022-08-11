@@ -13,7 +13,7 @@ function ListItem({ id, title, content, createdAt, updatedAt }: TodoItemType) {
     ? formatDate(createdAt)
     : formatDate(updatedAt);
 
-  const checkedString = isChecked ? 'line-through text-zinc-300' : '';
+  const checkedStringStyle = isChecked ? 'line-through text-zinc-300' : '';
 
   const storagedCheckedState = localStorage.getItem(title);
 
@@ -52,16 +52,16 @@ function ListItem({ id, title, content, createdAt, updatedAt }: TodoItemType) {
       </label>
       <NavLink to={`${id}`} className="flex items-center w-full h-full">
         <section className="w-[65%] h-full">
-          <h1 className={`h-1/2 py-2 px-3 text-3xl ${checkedString}`}>
+          <h1 className={`h-1/2 py-2 px-3 text-3xl ${checkedStringStyle}`}>
             {shortenString(title)}
           </h1>
-          <p className={`h-1/2 py-2 px-3 text-zinc-400 ${checkedString}`}>
+          <p className={`h-1/2 py-2 px-3 text-zinc-400 ${checkedStringStyle}`}>
             {shortenString(content)}
           </p>
         </section>
         <section className="flex items-end w-[35%] h-full">
           <p
-            className={`flex-center w-full h-1/2 pb-1 text-zinc-400 ${checkedString}`}
+            className={`flex-center w-full h-1/2 pb-1 text-zinc-400 ${checkedStringStyle}`}
           >
             {dateString}
           </p>

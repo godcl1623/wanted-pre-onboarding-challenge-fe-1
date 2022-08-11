@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { BASE_URL } from 'utils/constants';
 
-export const communicateServerBy = (baseURL = BASE_URL) => {
+export const returnApis = (baseURL = BASE_URL) => {
   const axiosInstance = axios.create({ baseURL });
 
   const getData = async <T>(url: string, options?: T) => {
@@ -27,4 +27,4 @@ export const communicateServerBy = (baseURL = BASE_URL) => {
   return { getData, postData, putData, deleteData };
 };
 
-export default communicateServerBy;
+export default returnApis;

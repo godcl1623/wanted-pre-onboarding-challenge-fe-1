@@ -5,7 +5,7 @@ import { EMAIL_RULE, PASSWORD_RULE } from 'utils/constants';
 import Path from 'routes/Path';
 import useCheckLogin from 'hooks/useCheckLogin';
 import FormInput from 'components/FormInput';
-import FormSubmit from 'components/FormSubmit';
+import FormSubmitButton from 'components/FormSubmitButton';
 import { handleLogin } from '../../controllers';
 
 function Login() {
@@ -18,7 +18,7 @@ function Login() {
 
   const navigate = useNavigate();
 
-  const { authenticationToken } = useCheckLogin();
+  const { isTokenAvailable } = useCheckLogin();
 
   const checkValidation = (target: string, validationResult: boolean) => {
     setInputValidState((previousState: InputValidState) => ({
@@ -36,10 +36,10 @@ function Login() {
   }
 
   React.useEffect(() => {
-    if (authenticationToken) {
+    if (isTokenAvailable) {
       navigate(Path.Items);
     }
-  }, [authenticationToken]);
+  }, [isTokenAvailable]);
 
   return (
     <main className="main-base">
@@ -65,7 +65,7 @@ function Login() {
           checkValidation={checkValidation}
         />
         <div className="flex-center flex-col w-full py-5">
-          <FormSubmit
+          <FormSubmitButton
             disableCondition={
               !(inputValidState.email && inputValidState.password)
             }

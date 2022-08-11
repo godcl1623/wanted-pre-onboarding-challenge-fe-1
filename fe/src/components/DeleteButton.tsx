@@ -4,15 +4,13 @@ import { deleteTodoItem } from 'controllers';
 import { STORAGED_TOKEN } from 'utils/constants';
 import Path from 'routes/Path';
 
-function DeleteButton({
-  id,
-  title,
-  additionalStyle,
-}: {
+interface DeleteButtonProps {
   id: string;
   title: string;
   additionalStyle: string;
-}) {
+}
+
+function DeleteButton({ id, title, additionalStyle }: DeleteButtonProps) {
   const navigate = useNavigate();
 
   function handleClick() {

@@ -8,16 +8,8 @@ import { STORAGED_TOKEN } from 'utils/constants';
 import { formatDate, shortenString } from 'utils/helpers';
 import { isEqual } from 'utils/capsuledConditions';
 
-interface BasicType {
-  id: string;
-  title: string;
-  content: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
 function TodoDetail() {
-  const [itemInfo, setItemInfo] = React.useState<TodoItemType | BasicType>({
+  const [itemInfo, setItemInfo] = React.useState<TodoItemType>({
     id: '',
     title: '',
     content: '',
@@ -29,7 +21,7 @@ function TodoDetail() {
 
   const shortenedTitle = shortenString(itemInfo.title);
 
-  const contents = itemInfo.content
+  const processedContents = itemInfo.content
     .split('\n')
     .map((content: string, index: number) => {
       return (
@@ -58,7 +50,7 @@ function TodoDetail() {
       <hr className="my-[3%] border border-solid" />
       <section className="h-[74%] px-5 py-3">
         <h1 className="mb-5 font-bold text-3xl">{itemInfo.title}</h1>
-        {contents}
+        {processedContents}
       </section>
       <p className="my-1 text-end text-zinc-400">
         작성일: {formatDate(itemInfo.createdAt, true)}

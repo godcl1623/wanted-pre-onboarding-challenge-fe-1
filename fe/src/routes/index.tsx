@@ -6,8 +6,8 @@ import Login from 'pages/Login';
 import Todo from 'pages/Todo';
 import SignUp from 'pages/SignUp';
 import TodoDetail from 'pages/Todo/components/TodoDetail';
-import AddItemDetail from 'pages/Todo/components/AddItemDetail';
-import ModifyItemDetail from 'pages/Todo/components/ModifyItemDetail';
+import ItemAddContainer from 'pages/Todo/components/ItemAddContainer';
+import ItemModifyContainer from 'pages/Todo/components/ItemModifyContainer';
 import Path from './Path';
 
 function Routing() {
@@ -17,8 +17,8 @@ function Routing() {
         <Route path={Path.Root} element={<Landing />} />
         <Route path={Path.Items} element={<Todo />}>
           <Route path={Path.Detail} element={<TodoDetail />} />
-          <Route path={Path.Add} element={<AddItemDetail />} />
-          <Route path={Path.Modify} element={<ModifyItemDetail />} />
+          <Route path={Path.Add} element={<ItemAddContainer />} />
+          <Route path={Path.Modify} element={<ItemModifyContainer />} />
         </Route>
         <Route path={Path.Auth} element={<Login />} />
         <Route path={Path.SignUp} element={<SignUp />} />

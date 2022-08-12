@@ -1,8 +1,3 @@
-export interface InputValidState {
-  email: boolean;
-  password: boolean;
-}
-
 export interface TodoItemType {
   id: string;
   title: string;
@@ -14,3 +9,5 @@ export interface TodoItemType {
 export interface ButtonProps extends TodoItemType {
   additionalStyle?: string;
 }
+
+export type TokenType = string | null;

@@ -1,4 +1,5 @@
 import React from 'react';
+import { TokenType } from 'types';
 import { extractInputValue } from 'utils/helpers';
 import loginController from './loginController';
 import signUpController from './signUpController';
@@ -48,7 +49,7 @@ export async function handleSignUp(event: React.FormEvent<HTMLFormElement>) {
 }
 
 export async function getTodoLists(
-  authenticationToken: string | null,
+  authenticationToken: TokenType,
   todoId = '',
 ) {
   let result;
@@ -64,7 +65,7 @@ export async function getTodoLists(
 }
 
 export async function createTodoItem(
-  authenticationToken: string | null,
+  authenticationToken: TokenType,
   content: string,
 ) {
   let result = false;
@@ -80,7 +81,7 @@ export async function createTodoItem(
 }
 
 export async function updateTodoItem(
-  authenticationToken: string | null,
+  authenticationToken: TokenType,
   todoId: string,
   content: string,
 ) {
@@ -97,7 +98,7 @@ export async function updateTodoItem(
 }
 
 export async function deleteTodoItem(
-  authenticationToken: string | null,
+  authenticationToken: TokenType,
   todoId: string,
 ) {
   let result = false;

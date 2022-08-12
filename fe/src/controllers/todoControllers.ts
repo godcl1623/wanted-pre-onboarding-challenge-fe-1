@@ -1,6 +1,5 @@
 import returnApis from 'api/returnApis';
-
-type TokenType = string | null;
+import { TokenType } from 'types';
 
 const { getData, postData, putData, deleteData } = returnApis();
 

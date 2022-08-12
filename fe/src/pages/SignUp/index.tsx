@@ -1,34 +1,18 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { InputValidState } from 'types';
 import { EMAIL_RULE, PASSWORD_RULE } from 'utils/constants';
 import Path from 'routes/Path';
 import { handleSignUp } from 'controllers/index';
+import useValidation from 'hooks/useValidation';
 import FormInput from 'components/FormInput';
 import FormSubmitButton from 'components/FormSubmitButton';
 
-interface SignUpValidState extends InputValidState {
-  passwordCheck: boolean;
-}
-
 function SignUp() {
-  const [inputValidState, setInputValidState] =
-    React.useState<SignUpValidState>({
-      email: false,
-      password: false,
-      passwordCheck: false,
-    });
-
   const passwordInput = React.useRef<HTMLInputElement | null>(null);
 
   const navigate = useNavigate();
 
-  const checkValidation = (target: string, validationResult: boolean) => {
-    setInputValidState((previousState: SignUpValidState) => ({
-      ...previousState,
-      [target]: validationResult,
-    }));
-  };
+  const { state, disableCondition, checkValidation } = useValidation('signup');
 
   async function handleSubmit(event: React.FormEvent) {
     const signUpResult = await handleSignUp(event);
@@ -53,7 +37,7 @@ function SignUp() {
           text="이메일"
           placeholder="ex) abcd@email.com"
           className="login-input-area"
-          isValid={inputValidState.email}
+          isValid={state.email}
           regexRule={EMAIL_RULE}
           checkValidation={checkValidation}
         />
@@ -64,7 +48,7 @@ function SignUp() {
           text="비밀번호"
           placeholder="비밀번호는 8자리 이상이어야 합니다."
           className="login-input-area"
-          isValid={inputValidState.password}
+          isValid={state.password}
           regexRule={PASSWORD_RULE}
           checkValidation={checkValidation}
         />
@@ -74,7 +58,7 @@ function SignUp() {
           text="비밀번호 확인"
           placeholder="비밀번호를 한 번 더 입력해주세요."
           className="login-input-area"
-          isValid={inputValidState.passwordCheck}
+          isValid={state.passwordCheck}
           // eslint-disable-next-line prefer-regex-literals
           regexRule={
             passwordInput.current
@@ -92,13 +76,7 @@ function SignUp() {
             취소
           </button>
           <FormSubmitButton
-            disableCondition={
-              !(
-                inputValidState.email &&
-                inputValidState.password &&
-                inputValidState.passwordCheck
-              )
-            }
+            disableCondition={disableCondition}
             value="회원가입"
             additionalStyles="w-1/3"
           />

@@ -33,16 +33,22 @@ function TodoDetail() {
     });
 
   React.useEffect(() => {
-    getTodoLists(authenticationToken, param.id).then((result) => {
-      setItemInfo((previousInfo: TodoItemType) => ({
-        ...previousInfo,
-        id: result.id,
-        title: result.title,
-        content: result.content,
-        createdAt: result.createdAt,
-        updatedAt: result.updatedAt,
-      }));
-    });
+    const setGetResultToList = async () => {
+      try {
+        const getResult = await getTodoLists(authenticationToken, param.id);
+        setItemInfo((previousInfo: TodoItemType) => ({
+          ...previousInfo,
+          id: getResult.id,
+          title: getResult.title,
+          content: getResult.content,
+          createdAt: getResult.createdAt,
+          updatedAt: getResult.updatedAt,
+        }));
+      } catch (error) {
+        throw new Error(error as string);
+      }
+    };
+    setGetResultToList();
   }, [param, authenticationToken]);
 
   return (

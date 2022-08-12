@@ -1,3 +1,4 @@
+import React from 'react';
 import format from 'date-fns/format';
 
 export const returnAlertMessage = (locationString: string) => {
@@ -20,4 +21,13 @@ export const shortenString = (stringToShorten: string) => {
   return stringToShorten.length <= 5
     ? stringToShorten
     : stringToShorten.slice(0, 5).concat('...');
+};
+
+export const returnQueryString = (event: React.FormEvent) => {
+  const currentForm = event.currentTarget as HTMLFormElement;
+  const titleInput = (currentForm[0] as HTMLInputElement).value;
+  const contentInput = (currentForm[1] as HTMLTextAreaElement).value;
+  const queryString = `title=${titleInput}&content=${contentInput}`;
+
+  return queryString;
 };

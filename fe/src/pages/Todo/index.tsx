@@ -22,7 +22,15 @@ function Todo() {
   }, [navigate, authenticationToken]);
 
   React.useEffect(() => {
-    getTodoLists(authenticationToken).then((res) => setTodoList(res));
+    const setGetResultToList = async () => {
+      try {
+        const getResult = await getTodoLists(authenticationToken);
+        setTodoList(getResult);
+      } catch (error) {
+        throw new Error(error as string);
+      }
+    };
+    setGetResultToList();
   }, [location.pathname, authenticationToken]);
 
   if (!authenticationToken) return <div />;

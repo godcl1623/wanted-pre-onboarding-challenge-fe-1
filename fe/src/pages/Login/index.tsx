@@ -15,7 +15,7 @@ function Login() {
 
   const { state, disableCondition, checkValidation } = useValidation();
 
-  async function handleSubmit(event: React.FormEvent) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     const loginResult = await handleLogin(event);
     if (loginResult) {
       alert('로그인 되었습니다.');

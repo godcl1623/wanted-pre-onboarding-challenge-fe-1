@@ -45,7 +45,7 @@ function TodoDetail() {
           updatedAt: getResult.updatedAt,
         }));
       } catch (error) {
-        throw new Error(error as string);
+        if (error instanceof Error) throw new Error(error.message);
       }
     };
     setGetResultToList();

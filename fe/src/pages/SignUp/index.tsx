@@ -14,7 +14,7 @@ function SignUp() {
 
   const { state, disableCondition, checkValidation } = useValidation('signup');
 
-  async function handleSubmit(event: React.FormEvent) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     const signUpResult = await handleSignUp(event);
     if (signUpResult) {
       alert('회원가입이 완료되었습니다.');

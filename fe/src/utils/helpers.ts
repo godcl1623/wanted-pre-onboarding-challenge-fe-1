@@ -23,10 +23,20 @@ export const shortenString = (stringToShorten: string) => {
     : stringToShorten.slice(0, 5).concat('...');
 };
 
-export const returnQueryString = (event: React.FormEvent) => {
-  const currentForm = event.currentTarget as HTMLFormElement;
-  const titleInput = (currentForm[0] as HTMLInputElement).value;
-  const contentInput = (currentForm[1] as HTMLTextAreaElement).value;
+export const extractInputValue = (event: React.FormEvent<HTMLFormElement>) => {
+  const formEventTarget = event.currentTarget;
+  let firstValue = '';
+  let secondValue = '';
+  const firstInput = formEventTarget['0'];
+  const secondInput = formEventTarget['1'];
+  if (firstInput instanceof HTMLInputElement) firstValue = firstInput.value;
+  if (secondInput instanceof HTMLInputElement) secondValue = secondInput.value;
+
+  return [firstValue, secondValue];
+};
+
+export const returnQueryString = (event: React.FormEvent<HTMLFormElement>) => {
+  const [titleInput, contentInput] = extractInputValue(event);
   const queryString = `title=${titleInput}&content=${contentInput}`;
 
   return queryString;

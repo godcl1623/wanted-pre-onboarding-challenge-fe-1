@@ -8,7 +8,7 @@ interface FormInputProps {
   placeholder?: string;
   className: string;
   isValid?: boolean;
-  checkValidation?: (target: string, validationResult: boolean) => void;
+  checkValidation: (target: string, validationResult: boolean) => void;
   regexRule?: RegExp;
 }
 
@@ -35,10 +35,12 @@ const FormInput = React.forwardRef<HTMLInputElement, FormInputProps>(
       isFrontBiggerThanRear(inputValueCount.current, 0) && !isValid;
 
     function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-      const regexResult = (regexRule as RegExp).test(event.currentTarget.value);
-      const numberOfValidInputs = event.currentTarget.value.length;
-      inputValueCount.current += numberOfValidInputs;
-      checkValidation && checkValidation(name, regexResult);
+      if (regexRule && regexRule instanceof RegExp) {
+        const regexResult = regexRule.test(event.currentTarget.value);
+        const numberOfValidInputs = event.currentTarget.value.length;
+        inputValueCount.current += numberOfValidInputs;
+        checkValidation(name, regexResult);
+      }
     }
 
     return (

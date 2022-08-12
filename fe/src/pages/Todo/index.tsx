@@ -27,7 +27,7 @@ function Todo() {
         const getResult = await getTodoLists(authenticationToken);
         setTodoList(getResult);
       } catch (error) {
-        throw new Error(error as string);
+        if (error instanceof Error) throw new Error(error.message);
       }
     };
     setGetResultToList();

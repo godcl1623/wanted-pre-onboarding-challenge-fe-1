@@ -11,9 +11,9 @@ function ItemModifyContainer() {
 
   const { state } = useLocation();
 
-  const itemInfo = state as TodoItemType;
+  const itemInfo: TodoItemType = state as TodoItemType;
 
-  async function handleSubmit(event: React.FormEvent) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const queryString = returnQueryString(event);
     const updateResult = await updateTodoItem(

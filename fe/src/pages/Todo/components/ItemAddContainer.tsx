@@ -9,7 +9,7 @@ function ItemAddContainer() {
   const navigate = useNavigate();
   const { authenticationToken } = useCheckLogin();
 
-  async function handleSubmit(event: React.FormEvent) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const queryString = returnQueryString(event);
     const createResult = await createTodoItem(authenticationToken, queryString);

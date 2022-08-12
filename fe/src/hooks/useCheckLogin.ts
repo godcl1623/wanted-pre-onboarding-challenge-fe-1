@@ -1,18 +1,11 @@
 import React from 'react';
-import { STORAGED_TOKEN } from 'utils/constants';
 
 const useCheckLogin = () => {
-  const [isTokenAvailable, setTokenAvailable] = React.useState<boolean>(false);
+  const [authenticationToken] = React.useState<string | null>(
+    localStorage.getItem('auth'),
+  );
 
-  React.useEffect(() => {
-    if (!STORAGED_TOKEN) {
-      setTokenAvailable(false);
-    } else {
-      setTokenAvailable(true);
-    }
-  }, []);
-
-  return { isTokenAvailable };
+  return { authenticationToken };
 };
 
 export default useCheckLogin;

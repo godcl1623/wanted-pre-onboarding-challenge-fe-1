@@ -2,10 +2,11 @@ import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { updateTodoItem } from 'controllers';
 import { TodoItemType } from 'types';
-import { STORAGED_TOKEN } from 'utils/constants';
+import useCheckLogin from 'hooks/useCheckLogin';
 
 function ItemModifyContainer() {
   const navigate = useNavigate();
+  const { authenticationToken } = useCheckLogin();
 
   const { state } = useLocation();
 
@@ -18,7 +19,7 @@ function ItemModifyContainer() {
     const contentInput = (currentForm[1] as HTMLTextAreaElement).value;
     const queryString = `title=${titleInput}&content=${contentInput}`;
     const updateResult = await updateTodoItem(
-      STORAGED_TOKEN,
+      authenticationToken,
       itemInfo.id,
       queryString,
     );

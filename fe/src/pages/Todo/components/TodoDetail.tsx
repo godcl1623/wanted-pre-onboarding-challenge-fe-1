@@ -4,9 +4,9 @@ import { getTodoLists } from 'controllers';
 import { TodoItemType } from 'types';
 import ModifyButton from 'components/ModifyButton';
 import DeleteButton from 'components/DeleteButton';
-import { STORAGED_TOKEN } from 'utils/constants';
 import { formatDate, shortenString } from 'utils/helpers';
 import { isEqual } from 'utils/capsuledConditions';
+import useCheckLogin from 'hooks/useCheckLogin';
 
 function TodoDetail() {
   const [itemInfo, setItemInfo] = React.useState<TodoItemType>({
@@ -18,6 +18,7 @@ function TodoDetail() {
   });
 
   const param = useParams();
+  const { authenticationToken } = useCheckLogin();
 
   const shortenedTitle = shortenString(itemInfo.title);
 
@@ -32,7 +33,7 @@ function TodoDetail() {
     });
 
   React.useEffect(() => {
-    getTodoLists(STORAGED_TOKEN, param.id).then((result) => {
+    getTodoLists(authenticationToken, param.id).then((result) => {
       setItemInfo((previousInfo: TodoItemType) => ({
         ...previousInfo,
         id: result.id,
@@ -42,7 +43,7 @@ function TodoDetail() {
         updatedAt: result.updatedAt,
       }));
     });
-  }, [param]);
+  }, [param, authenticationToken]);
 
   return (
     <article id="details" className="basis-1/2 ml-[0.5%] shadow-lg p-10">

@@ -18,7 +18,7 @@ function Login() {
 
   const navigate = useNavigate();
 
-  const { isTokenAvailable } = useCheckLogin();
+  const { authenticationToken } = useCheckLogin();
 
   const checkValidation = (target: string, validationResult: boolean) => {
     setInputValidState((previousState: InputValidState) => ({
@@ -36,10 +36,10 @@ function Login() {
   }
 
   React.useEffect(() => {
-    if (isTokenAvailable) {
+    if (authenticationToken) {
       navigate(Path.Items);
     }
-  }, [isTokenAvailable]);
+  }, [authenticationToken, navigate]);
 
   return (
     <main className="main-base">

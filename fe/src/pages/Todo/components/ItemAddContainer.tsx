@@ -1,11 +1,12 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createTodoItem } from 'controllers';
-import { STORAGED_TOKEN } from 'utils/constants';
+import useCheckLogin from 'hooks/useCheckLogin';
 import Path from 'routes/Path';
 
 function ItemAddContainer() {
   const navigate = useNavigate();
+  const { authenticationToken } = useCheckLogin();
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -13,7 +14,7 @@ function ItemAddContainer() {
     const titleInput = (currentForm[0] as HTMLInputElement).value;
     const contentInput = (currentForm[1] as HTMLTextAreaElement).value;
     const queryString = `title=${titleInput}&content=${contentInput}`;
-    const createResult = await createTodoItem(STORAGED_TOKEN, queryString);
+    const createResult = await createTodoItem(authenticationToken, queryString);
 
     if (createResult) {
       alert('저장이 완료됐습니다.');

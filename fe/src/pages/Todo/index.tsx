@@ -2,7 +2,6 @@ import React from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { getTodoLists } from 'controllers';
 import { TodoItemType } from 'types';
-import { STORAGED_TOKEN } from 'utils/constants';
 import Path from 'routes/Path';
 import ListItem from './components/ListItem';
 import AddItemButton from './components/AddItemButton';
@@ -13,21 +12,20 @@ function Todo() {
 
   const location = useLocation();
   const navigate = useNavigate();
-
-  const { isTokenAvailable } = useCheckLogin();
+  const { authenticationToken } = useCheckLogin();
 
   React.useEffect(() => {
-    if (!isTokenAvailable) {
+    if (!authenticationToken) {
       alert('로그인이 필요합니다.');
       navigate(Path.Auth);
     }
-  }, [isTokenAvailable, navigate]);
+  }, [navigate, authenticationToken]);
 
   React.useEffect(() => {
-    getTodoLists(STORAGED_TOKEN).then((res) => setTodoList(res));
-  }, [location.pathname]);
+    getTodoLists(authenticationToken).then((res) => setTodoList(res));
+  }, [location.pathname, authenticationToken]);
 
-  if (!isTokenAvailable) return <div />;
+  if (!authenticationToken) return <div />;
 
   const todoItemsList = todoList.map(
     (todoItem: TodoItemType, index: number) => {

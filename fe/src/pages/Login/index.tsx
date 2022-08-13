@@ -19,13 +19,13 @@ function Login() {
     const loginResult = await handleLogin(event);
     if (loginResult) {
       alert('로그인 되었습니다.');
-      navigate(Path.Items);
+      navigate(Path.Todos);
     }
   }
 
   React.useEffect(() => {
     if (authenticationToken) {
-      navigate(Path.Items);
+      navigate(Path.Todos);
     }
   }, [authenticationToken, navigate]);
 

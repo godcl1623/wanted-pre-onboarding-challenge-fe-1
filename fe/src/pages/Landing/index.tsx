@@ -9,7 +9,7 @@ export default function Landing() {
 
   React.useEffect(() => {
     if (authenticationToken) {
-      navigate(Path.Items);
+      navigate(Path.Todos);
     } else {
       alert('로그인이 필요합니다.');
       navigate(Path.Auth);

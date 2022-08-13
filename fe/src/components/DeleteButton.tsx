@@ -19,7 +19,7 @@ function DeleteButton({ id, title, additionalStyle }: DeleteButtonProps) {
     if (deleteResult) {
       localStorage.removeItem(title);
       alert('삭제되었습니다.');
-      navigate(Path.Items);
+      navigate(Path.Todos);
     }
   }
 

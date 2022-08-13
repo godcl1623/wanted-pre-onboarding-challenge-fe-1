@@ -15,7 +15,7 @@ function Routing() {
     <Router>
       <Routes>
         <Route path={Path.Root} element={<Landing />} />
-        <Route path={Path.Items} element={<Todo />}>
+        <Route path={Path.Todos} element={<Todo />}>
           <Route path={Path.Detail} element={<TodoDetail />} />
           <Route path={Path.Add} element={<ItemAddContainer />} />
           <Route path={Path.Modify} element={<ItemModifyContainer />} />

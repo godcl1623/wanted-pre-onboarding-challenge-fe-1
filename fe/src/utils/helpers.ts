@@ -5,7 +5,7 @@ export const returnAlertMessage = (locationString: string) => {
   switch (locationString) {
     case '/auth':
       return '로그인 정보가 올바르지 않습니다.';
-    case '/signup':
+    case '/auth/signup':
       return '이미 가입된 정보입니다.';
     default:
       return '오류가 발생했습니다.';

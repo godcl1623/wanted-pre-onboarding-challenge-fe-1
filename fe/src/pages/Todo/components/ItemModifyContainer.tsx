@@ -24,7 +24,7 @@ function ItemModifyContainer() {
 
     if (updateResult) {
       alert('수정이 완료됐습니다.');
-      navigate(`/items/${itemInfo.id}`);
+      navigate(`/todos/${itemInfo.id}`);
     }
   }
 

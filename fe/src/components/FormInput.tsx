@@ -1,5 +1,6 @@
 import React from 'react';
 import { isEqual, isFrontBiggerThanRear } from 'utils/capsuledConditions';
+import useCheckValidation from 'hooks/useCheckValidation';
 
 interface FormInputProps {
   type: string;
@@ -7,9 +8,8 @@ interface FormInputProps {
   text: string;
   placeholder?: string;
   className: string;
-  isValid?: boolean;
-  checkValidation: (target: string, validationResult: boolean) => void;
-  regexRule?: RegExp;
+  regexRule: RegExp;
+  checkIfInputValid: (inputName: string, isInputValid: boolean) => void;
 }
 
 const FormInput = React.forwardRef<HTMLInputElement, FormInputProps>(
@@ -20,28 +20,32 @@ const FormInput = React.forwardRef<HTMLInputElement, FormInputProps>(
       text,
       placeholder,
       className,
-      isValid,
-      checkValidation,
       regexRule,
+      checkIfInputValid,
     } = props;
 
+    const [inputValue, setInputValue] = React.useState<string>('');
+
     const inputValueCount = React.useRef<number>(0);
+
+    const isInputValid = useCheckValidation(inputValue, regexRule);
 
     const validationFailedString = isEqual(name, 'passwordCheck')
       ? '비밀번호가 일치하지 않습니다.'
       : '입력한 값이 형식과 맞지 않습니다.';
 
     const validationCondition =
-      isFrontBiggerThanRear(inputValueCount.current, 0) && !isValid;
+      isFrontBiggerThanRear(inputValueCount.current, 0) && !isInputValid;
 
     function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-      if (regexRule && regexRule instanceof RegExp) {
-        const regexResult = regexRule.test(event.currentTarget.value);
-        const numberOfValidInputs = event.currentTarget.value.length;
-        inputValueCount.current += numberOfValidInputs;
-        checkValidation(name, regexResult);
-      }
+      const currentInputLength = event.currentTarget.value.length;
+      inputValueCount.current += currentInputLength;
+      setInputValue(event.currentTarget.value);
     }
+
+    React.useEffect(() => {
+      if (isInputValid) checkIfInputValid(name, isInputValid);
+    }, [isInputValid]);
 
     return (
       <label htmlFor={name} className={className}>
@@ -61,6 +65,7 @@ const FormInput = React.forwardRef<HTMLInputElement, FormInputProps>(
               ? 'border border-solid border-red-500'
               : 'border-none'
           }`}
+          value={inputValue}
           onChange={handleChange}
         />
       </label>

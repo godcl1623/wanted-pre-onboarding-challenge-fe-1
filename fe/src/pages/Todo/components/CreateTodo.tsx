@@ -1,30 +1,23 @@
 import React from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { updateTodoItem } from 'controllers';
-import { TodoItemType } from 'types';
-import useCheckLogin from 'hooks/useCheckLogin';
-import { returnQueryString } from 'utils/helpers';
+import { useNavigate } from 'react-router-dom';
+import { createTodoItem } from 'controllers';
+import useCheckAuthenticationToken from 'hooks/useCheckAuthenticationToken';
+import { extractInputValue, returnQueryString } from 'utils/helpers';
+import Path from 'routes/Path';
 
-function ItemModifyContainer() {
+function CreateTodo() {
   const navigate = useNavigate();
-  const { authenticationToken } = useCheckLogin();
-
-  const { state } = useLocation();
-
-  const itemInfo = state as TodoItemType;
+  const { authenticationToken } = useCheckAuthenticationToken();
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const queryString = returnQueryString(event);
-    const updateResult = await updateTodoItem(
-      authenticationToken,
-      itemInfo.id,
-      queryString,
-    );
+    const [titleInput, contentInput] = extractInputValue(event);
+    const queryString = returnQueryString(titleInput, contentInput);
+    const createResult = await createTodoItem(authenticationToken, queryString);
 
-    if (updateResult) {
-      alert('수정이 완료됐습니다.');
-      navigate(`/items/${itemInfo.id}`);
+    if (createResult) {
+      alert('저장이 완료됐습니다.');
+      navigate(Path.Todos);
     }
   }
 
@@ -41,16 +34,11 @@ function ItemModifyContainer() {
           type="text"
           name="title"
           placeholder="제목"
-          defaultValue={itemInfo.title}
           className="w-full h-[10%] px-5 text-6xl bg-transparent"
         />
         <hr className="my-[3%] border border-solid" />
         <section className="h-[80%] py-3">
-          <textarea
-            name="content"
-            defaultValue={itemInfo.content}
-            className="w-full h-full p-3 text-xl"
-          />
+          <textarea name="content" className="w-full h-full p-3 text-xl" />
         </section>
         <section className="flex justify-end h-[5%] mt-3">
           <button
@@ -71,4 +59,4 @@ function ItemModifyContainer() {
   );
 }
 
-export default React.memo(ItemModifyContainer);
+export default React.memo(CreateTodo);

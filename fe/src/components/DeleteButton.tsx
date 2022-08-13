@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { deleteTodoItem } from 'controllers';
-import useCheckLogin from 'hooks/useCheckLogin';
+import useCheckAuthenticationToken from 'hooks/useCheckAuthenticationToken';
 import Path from 'routes/Path';
 
 interface DeleteButtonProps {
@@ -12,14 +12,15 @@ interface DeleteButtonProps {
 
 function DeleteButton({ id, title, additionalStyle }: DeleteButtonProps) {
   const navigate = useNavigate();
-  const { authenticationToken } = useCheckLogin();
+  const { authenticationToken } = useCheckAuthenticationToken();
 
   async function handleClick() {
     const deleteResult = await deleteTodoItem(authenticationToken, id);
+
     if (deleteResult) {
       localStorage.removeItem(title);
       alert('삭제되었습니다.');
-      navigate(Path.Items);
+      navigate(Path.Todos);
     }
   }
 

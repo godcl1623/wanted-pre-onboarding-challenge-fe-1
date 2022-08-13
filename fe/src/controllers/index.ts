@@ -1,6 +1,5 @@
 import React from 'react';
 import { TokenType } from 'types';
-import { extractInputValue } from 'utils/helpers';
 import loginController from './loginController';
 import signUpController from './signUpController';
 import {
@@ -10,10 +9,11 @@ import {
   deleteTodo,
 } from './todoControllers';
 
-export async function handleLogin(event: React.FormEvent<HTMLFormElement>) {
-  event.preventDefault();
+export async function handleLogin(
+  emailInputValue: string,
+  passwordInputValue: string,
+) {
   let result = false;
-  const [emailInputValue, passwordInputValue] = extractInputValue(event);
 
   try {
     const loginResult = await loginController(
@@ -29,10 +29,11 @@ export async function handleLogin(event: React.FormEvent<HTMLFormElement>) {
   return result;
 }
 
-export async function handleSignUp(event: React.FormEvent<HTMLFormElement>) {
-  event.preventDefault();
+export async function handleSignUp(
+  emailInputValue: string,
+  passwordInputValue: string,
+) {
   let result = false;
-  const [emailInputValue, passwordInputValue] = extractInputValue(event);
 
   try {
     const signUpResult = await signUpController(

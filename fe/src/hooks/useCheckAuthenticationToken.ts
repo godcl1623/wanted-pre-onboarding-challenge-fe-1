@@ -1,7 +1,7 @@
 import React from 'react';
 import { TokenType } from 'types';
 
-const useCheckLogin = () => {
+const useCheckAuthenticationToken = () => {
   const [authenticationToken] = React.useState<TokenType>(
     localStorage.getItem('auth'),
   );
@@ -9,4 +9,4 @@ const useCheckLogin = () => {
   return { authenticationToken };
 };
 
-export default useCheckLogin;
+export default useCheckAuthenticationToken;

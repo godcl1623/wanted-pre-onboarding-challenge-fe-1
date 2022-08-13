@@ -1,12 +1,14 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import format from 'date-fns/format';
 import { getTodoLists } from 'controllers';
 import { TodoItemType } from 'types';
+import { DATE_FORMAT_WITH_TIME } from 'utils/constants';
+import { isEqual } from 'utils/capsuledConditions';
+import useCheckAuthenticationToken from 'hooks/useCheckAuthenticationToken';
+import { shortenString } from 'utils/helpers';
 import ModifyButton from 'components/ModifyButton';
 import DeleteButton from 'components/DeleteButton';
-import { formatDate, shortenString } from 'utils/helpers';
-import { isEqual } from 'utils/capsuledConditions';
-import useCheckLogin from 'hooks/useCheckLogin';
 
 function TodoDetail() {
   const [itemInfo, setItemInfo] = React.useState<TodoItemType>({
@@ -18,7 +20,7 @@ function TodoDetail() {
   });
 
   const param = useParams();
-  const { authenticationToken } = useCheckLogin();
+  const { authenticationToken } = useCheckAuthenticationToken();
 
   const shortenedTitle = shortenString(itemInfo.title);
 
@@ -60,10 +62,12 @@ function TodoDetail() {
         {processedContents}
       </section>
       <p className="my-1 text-end text-zinc-400">
-        작성일: {formatDate(itemInfo.createdAt, true)}
+        작성일: {format(new Date(itemInfo.createdAt), DATE_FORMAT_WITH_TIME)}
       </p>
       {!isEqual(itemInfo.createdAt, itemInfo.updatedAt) && (
-        <p>수정일: {formatDate(itemInfo.updatedAt, true)}</p>
+        <p>
+          수정일: {format(new Date(itemInfo.updatedAt), DATE_FORMAT_WITH_TIME)}
+        </p>
       )}
       <section className="flex justify-end h-[5%] mt-3">
         <ModifyButton

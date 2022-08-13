@@ -1,28 +1,57 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { InputValidState } from 'types';
 import { EMAIL_RULE, PASSWORD_RULE } from 'utils/constants';
 import Path from 'routes/Path';
 import { handleSignUp } from 'controllers/index';
-import useValidation from 'hooks/useValidation';
+import { isEqual } from 'utils/capsuledConditions';
 import FormInput from 'components/FormInput';
 import FormSubmitButton from 'components/FormSubmitButton';
+import { extractInputValue } from 'utils/helpers';
+
+interface SignUpValidState extends InputValidState {
+  passwordCheck: boolean;
+}
 
 function SignUp() {
   const passwordInput = React.useRef<HTMLInputElement | null>(null);
 
+  const [inputValidState, setInputValidState] =
+    React.useState<SignUpValidState>({
+      email: false,
+      password: false,
+      passwordCheck: false,
+    });
+
+  const numberOfValidInputs = Object.values(inputValidState).filter(
+    (isInputValid: boolean) => isInputValid,
+  ).length;
+  const totalInputs = Object.keys(inputValidState).length;
+
   const navigate = useNavigate();
 
-  const { state, disableCondition, checkValidation } = useValidation('signup');
+  const checkIfInputValid = (inputName: string, isInputValid: boolean) => {
+    setInputValidState((previousState: SignUpValidState) => ({
+      ...previousState,
+      [inputName]: isInputValid,
+    }));
+  };
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    const signUpResult = await handleSignUp(event);
+    event.preventDefault();
+    const [emailInputValue, passwordInputValue] = extractInputValue(event);
+    const signUpResult = await handleSignUp(
+      emailInputValue,
+      passwordInputValue,
+    );
+
     if (signUpResult) {
       alert('회원가입이 완료되었습니다.');
       navigate(Path.Root);
     }
   }
 
-  async function handleClick() {
+  function handleClick() {
     if (window.confirm('회원가입을 취소하시겠습니까?')) {
       navigate(Path.Auth);
     }
@@ -37,9 +66,8 @@ function SignUp() {
           text="이메일"
           placeholder="ex) abcd@email.com"
           className="login-input-area"
-          isValid={state.email}
           regexRule={EMAIL_RULE}
-          checkValidation={checkValidation}
+          checkIfInputValid={checkIfInputValid}
         />
         <FormInput
           ref={passwordInput}
@@ -48,9 +76,8 @@ function SignUp() {
           text="비밀번호"
           placeholder="비밀번호는 8자리 이상이어야 합니다."
           className="login-input-area"
-          isValid={state.password}
           regexRule={PASSWORD_RULE}
-          checkValidation={checkValidation}
+          checkIfInputValid={checkIfInputValid}
         />
         <FormInput
           type="password"
@@ -58,14 +85,12 @@ function SignUp() {
           text="비밀번호 확인"
           placeholder="비밀번호를 한 번 더 입력해주세요."
           className="login-input-area"
-          isValid={state.passwordCheck}
-          // eslint-disable-next-line prefer-regex-literals
           regexRule={
             passwordInput.current
               ? new RegExp(passwordInput.current.value)
               : /(?:)/
           }
-          checkValidation={checkValidation}
+          checkIfInputValid={checkIfInputValid}
         />
         <div className="flex-center justify-evenly w-full py-5">
           <button
@@ -76,7 +101,7 @@ function SignUp() {
             취소
           </button>
           <FormSubmitButton
-            disableCondition={disableCondition}
+            disableCondition={!isEqual(numberOfValidInputs, totalInputs)}
             value="회원가입"
             additionalStyles="w-1/3"
           />

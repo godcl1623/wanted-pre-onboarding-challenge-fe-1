@@ -1,15 +1,10 @@
 import React from 'react';
 import { isEqual, isFrontBiggerThanRear } from 'utils/capsuledConditions';
 
-interface FormInputProps {
-  type: string;
-  name: string;
+interface FormInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   text: string;
-  placeholder?: string;
-  className: string;
-  isValid?: boolean;
-  checkValidation: (target: string, validationResult: boolean) => void;
-  regexRule?: RegExp;
+  regexRule: RegExp;
+  checkIfInputValid: (inputName: string, isInputValid: boolean) => void;
 }
 
 const FormInput = React.forwardRef<HTMLInputElement, FormInputProps>(
@@ -20,10 +15,12 @@ const FormInput = React.forwardRef<HTMLInputElement, FormInputProps>(
       text,
       placeholder,
       className,
-      isValid,
-      checkValidation,
       regexRule,
+      checkIfInputValid,
     } = props;
+
+    const [isValid, setIsValid] = React.useState<boolean>(false);
+    const [inputValue, setInputValue] = React.useState<string>('');
 
     const inputValueCount = React.useRef<number>(0);
 
@@ -35,13 +32,18 @@ const FormInput = React.forwardRef<HTMLInputElement, FormInputProps>(
       isFrontBiggerThanRear(inputValueCount.current, 0) && !isValid;
 
     function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-      if (regexRule && regexRule instanceof RegExp) {
-        const regexResult = regexRule.test(event.currentTarget.value);
-        const numberOfValidInputs = event.currentTarget.value.length;
-        inputValueCount.current += numberOfValidInputs;
-        checkValidation(name, regexResult);
-      }
+      const currentInputLength = event.currentTarget.value.length;
+      inputValueCount.current += currentInputLength;
+      setInputValue(event.currentTarget.value);
     }
+
+    React.useEffect(() => {
+      if (typeof name === 'string') {
+        const testResult = regexRule.test(inputValue);
+        setIsValid(testResult);
+        if (testResult) checkIfInputValid(name, testResult);
+      }
+    }, [inputValue]);
 
     return (
       <label htmlFor={name} className={className}>
@@ -61,6 +63,7 @@ const FormInput = React.forwardRef<HTMLInputElement, FormInputProps>(
               ? 'border border-solid border-red-500'
               : 'border-none'
           }`}
+          value={inputValue}
           onChange={handleChange}
         />
       </label>

@@ -3,8 +3,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { InputValidState } from 'types';
 import { EMAIL_RULE, PASSWORD_RULE } from 'utils/constants';
 import Path from 'routes/Path';
-import useCheckLogin from 'hooks/useCheckLogin';
+import useCheckAuthenticationToken from 'hooks/useCheckAuthenticationToken';
 import { isEqual } from 'utils/capsuledConditions';
+import { extractInputValue } from 'utils/helpers';
 import FormInput from 'components/FormInput';
 import FormSubmitButton from 'components/FormSubmitButton';
 import { handleLogin } from '../../controllers';
@@ -20,11 +21,11 @@ function Login() {
   const numberOfValidInputs = Object.values(inputValidState).filter(
     (isInputValid: boolean) => isInputValid,
   ).length;
-  const totalInputs = Object.keys(inputValidState).length;
+  const numberOfTotalInputs = Object.keys(inputValidState).length;
 
   const navigate = useNavigate();
 
-  const { authenticationToken } = useCheckLogin();
+  const { authenticationToken } = useCheckAuthenticationToken();
 
   const checkIfInputValid = (inputName: string, isInputValid: boolean) => {
     setInputValidState((previousState: InputValidState) => ({
@@ -34,7 +35,10 @@ function Login() {
   };
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    const loginResult = await handleLogin(event);
+    event.preventDefault();
+    const [emailInputValue, passwordInputValue] = extractInputValue(event);
+    const loginResult = await handleLogin(emailInputValue, passwordInputValue);
+
     if (loginResult) {
       alert('로그인 되었습니다.');
       navigate(Path.Todos);
@@ -70,7 +74,9 @@ function Login() {
         />
         <div className="flex-center flex-col w-full py-5">
           <FormSubmitButton
-            disableCondition={!isEqual(numberOfValidInputs, totalInputs)}
+            disableCondition={
+              !isEqual(numberOfValidInputs, numberOfTotalInputs)
+            }
             additionalStyles="mb-3"
             value="로그인"
           />

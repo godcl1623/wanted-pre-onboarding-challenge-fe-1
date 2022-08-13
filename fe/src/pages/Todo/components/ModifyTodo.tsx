@@ -2,12 +2,12 @@ import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { updateTodoItem } from 'controllers';
 import { TodoItemType } from 'types';
-import useCheckLogin from 'hooks/useCheckLogin';
-import { returnQueryString } from 'utils/helpers';
+import useCheckAuthenticationToken from 'hooks/useCheckAuthenticationToken';
+import { extractInputValue, returnQueryString } from 'utils/helpers';
 
-function ItemModifyContainer() {
+function ModifyTodo() {
   const navigate = useNavigate();
-  const { authenticationToken } = useCheckLogin();
+  const { authenticationToken } = useCheckAuthenticationToken();
 
   const { state } = useLocation();
 
@@ -15,7 +15,8 @@ function ItemModifyContainer() {
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const queryString = returnQueryString(event);
+    const [titleInput, contentInput] = extractInputValue(event);
+    const queryString = returnQueryString(titleInput, contentInput);
     const updateResult = await updateTodoItem(
       authenticationToken,
       itemInfo.id,
@@ -71,4 +72,4 @@ function ItemModifyContainer() {
   );
 }
 
-export default React.memo(ItemModifyContainer);
+export default React.memo(ModifyTodo);

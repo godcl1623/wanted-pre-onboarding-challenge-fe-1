@@ -1,13 +1,8 @@
 import React from 'react';
 import { isEqual, isFrontBiggerThanRear } from 'utils/capsuledConditions';
-import useCheckValidation from 'hooks/useCheckValidation';
 
-interface FormInputProps {
-  type: string;
-  name: string;
+interface FormInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   text: string;
-  placeholder?: string;
-  className: string;
   regexRule: RegExp;
   checkIfInputValid: (inputName: string, isInputValid: boolean) => void;
 }
@@ -24,18 +19,17 @@ const FormInput = React.forwardRef<HTMLInputElement, FormInputProps>(
       checkIfInputValid,
     } = props;
 
+    const [isValid, setIsValid] = React.useState<boolean>(false);
     const [inputValue, setInputValue] = React.useState<string>('');
 
     const inputValueCount = React.useRef<number>(0);
-
-    const isInputValid = useCheckValidation(inputValue, regexRule);
 
     const validationFailedString = isEqual(name, 'passwordCheck')
       ? '비밀번호가 일치하지 않습니다.'
       : '입력한 값이 형식과 맞지 않습니다.';
 
     const validationCondition =
-      isFrontBiggerThanRear(inputValueCount.current, 0) && !isInputValid;
+      isFrontBiggerThanRear(inputValueCount.current, 0) && !isValid;
 
     function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
       const currentInputLength = event.currentTarget.value.length;
@@ -44,8 +38,12 @@ const FormInput = React.forwardRef<HTMLInputElement, FormInputProps>(
     }
 
     React.useEffect(() => {
-      if (isInputValid) checkIfInputValid(name, isInputValid);
-    }, [isInputValid]);
+      if (typeof name === 'string') {
+        const testResult = regexRule.test(inputValue);
+        setIsValid(testResult);
+        if (testResult) checkIfInputValid(name, testResult);
+      }
+    }, [inputValue]);
 
     return (
       <label htmlFor={name} className={className}>

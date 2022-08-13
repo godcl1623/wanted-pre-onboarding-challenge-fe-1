@@ -5,7 +5,7 @@ import { TodoItemType } from 'types';
 import Path from 'routes/Path';
 import ListItem from './components/ListItem';
 import AddItemButton from './components/AddItemButton';
-import useCheckLogin from '../../hooks/useCheckLogin';
+import useCheckLogin from '../../hooks/useCheckAuthenticationToken';
 
 function Todo() {
   const [todoList, setTodoList] = React.useState<TodoItemType[]>([]);

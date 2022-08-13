@@ -1,17 +1,18 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createTodoItem } from 'controllers';
-import useCheckLogin from 'hooks/useCheckLogin';
-import { returnQueryString } from 'utils/helpers';
+import useCheckAuthenticationToken from 'hooks/useCheckAuthenticationToken';
+import { extractInputValue, returnQueryString } from 'utils/helpers';
 import Path from 'routes/Path';
 
-function ItemAddContainer() {
+function CreateTodo() {
   const navigate = useNavigate();
-  const { authenticationToken } = useCheckLogin();
+  const { authenticationToken } = useCheckAuthenticationToken();
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const queryString = returnQueryString(event);
+    const [titleInput, contentInput] = extractInputValue(event);
+    const queryString = returnQueryString(titleInput, contentInput);
     const createResult = await createTodoItem(authenticationToken, queryString);
 
     if (createResult) {
@@ -58,4 +59,4 @@ function ItemAddContainer() {
   );
 }
 
-export default React.memo(ItemAddContainer);
+export default React.memo(CreateTodo);

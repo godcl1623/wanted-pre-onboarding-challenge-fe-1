@@ -1,11 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import useCheckLogin from 'hooks/useCheckLogin';
+import useCheckAuthenticationToken from 'hooks/useCheckAuthenticationToken';
 import Path from 'routes/Path';
 
-export default function Landing() {
+export default function Redirector() {
   const navigate = useNavigate();
-  const { authenticationToken } = useCheckLogin();
+  const { authenticationToken } = useCheckAuthenticationToken();
 
   React.useEffect(() => {
     if (authenticationToken) {

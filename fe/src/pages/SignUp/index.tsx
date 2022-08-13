@@ -7,6 +7,7 @@ import { handleSignUp } from 'controllers/index';
 import { isEqual } from 'utils/capsuledConditions';
 import FormInput from 'components/FormInput';
 import FormSubmitButton from 'components/FormSubmitButton';
+import { extractInputValue } from 'utils/helpers';
 
 interface SignUpValidState extends InputValidState {
   passwordCheck: boolean;
@@ -37,7 +38,13 @@ function SignUp() {
   };
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    const signUpResult = await handleSignUp(event);
+    event.preventDefault();
+    const [emailInputValue, passwordInputValue] = extractInputValue(event);
+    const signUpResult = await handleSignUp(
+      emailInputValue,
+      passwordInputValue,
+    );
+
     if (signUpResult) {
       alert('회원가입이 완료되었습니다.');
       navigate(Path.Root);

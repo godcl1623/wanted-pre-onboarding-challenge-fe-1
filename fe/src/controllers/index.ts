@@ -1,4 +1,6 @@
 import React from 'react';
+import { TokenType } from 'types';
+import { extractInputValue } from 'utils/helpers';
 import loginController from './loginController';
 import signUpController from './signUpController';
 import {
@@ -8,17 +10,15 @@ import {
   deleteTodo,
 } from './todoControllers';
 
-export async function handleLogin(event: React.FormEvent) {
+export async function handleLogin(event: React.FormEvent<HTMLFormElement>) {
   event.preventDefault();
   let result = false;
-  const formEventTarget = event.target as HTMLFormElement;
-  const emailInput = formEventTarget[0] as HTMLInputElement;
-  const passwordInput = formEventTarget[1] as HTMLInputElement;
+  const [emailInputValue, passwordInputValue] = extractInputValue(event);
 
   try {
     const loginResult = await loginController(
-      emailInput.value,
-      passwordInput.value,
+      emailInputValue,
+      passwordInputValue,
     );
     localStorage.setItem('auth', loginResult.token);
     result = true;
@@ -29,17 +29,15 @@ export async function handleLogin(event: React.FormEvent) {
   return result;
 }
 
-export async function handleSignUp(event: React.FormEvent) {
+export async function handleSignUp(event: React.FormEvent<HTMLFormElement>) {
   event.preventDefault();
   let result = false;
-  const formEventTarget = event.target as HTMLFormElement;
-  const emailInput = formEventTarget[0] as HTMLInputElement;
-  const passwordInput = formEventTarget[1] as HTMLInputElement;
+  const [emailInputValue, passwordInputValue] = extractInputValue(event);
 
   try {
     const signUpResult = await signUpController(
-      emailInput.value,
-      passwordInput.value,
+      emailInputValue,
+      passwordInputValue,
     );
     localStorage.setItem('auth', signUpResult.token);
     result = true;
@@ -51,19 +49,23 @@ export async function handleSignUp(event: React.FormEvent) {
 }
 
 export async function getTodoLists(
-  authenticationToken: string | null,
+  authenticationToken: TokenType,
   todoId = '',
 ) {
+  let result;
+
   try {
     const response = await getTodos(authenticationToken, todoId);
-    return response.data;
+    result = response.data;
   } catch (error) {
-    throw new Error(error as string);
+    if (error instanceof Error) throw new Error(error.message);
   }
+
+  return result;
 }
 
 export async function createTodoItem(
-  authenticationToken: string | null,
+  authenticationToken: TokenType,
   content: string,
 ) {
   let result = false;
@@ -72,14 +74,14 @@ export async function createTodoItem(
     const response = await createTodo(authenticationToken, content);
     result = true;
   } catch (error) {
-    throw new Error(error as string);
+    if (error instanceof Error) throw new Error(error.message);
   }
 
   return result;
 }
 
 export async function updateTodoItem(
-  authenticationToken: string | null,
+  authenticationToken: TokenType,
   todoId: string,
   content: string,
 ) {
@@ -89,14 +91,14 @@ export async function updateTodoItem(
     const response = await updateTodo(authenticationToken, todoId, content);
     result = true;
   } catch (error) {
-    throw new Error(error as string);
+    if (error instanceof Error) throw new Error(error.message);
   }
 
   return result;
 }
 
 export async function deleteTodoItem(
-  authenticationToken: string | null,
+  authenticationToken: TokenType,
   todoId: string,
 ) {
   let result = false;
@@ -105,7 +107,7 @@ export async function deleteTodoItem(
     const response = await deleteTodo(authenticationToken, todoId);
     result = true;
   } catch (error) {
-    throw new Error(error as string);
+    if (error instanceof Error) throw new Error(error.message);
   }
 
   return result;

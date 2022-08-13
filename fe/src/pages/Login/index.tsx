@@ -1,33 +1,21 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { InputValidState } from 'types';
 import { EMAIL_RULE, PASSWORD_RULE } from 'utils/constants';
 import Path from 'routes/Path';
 import useCheckLogin from 'hooks/useCheckLogin';
+import useValidation from 'hooks/useValidation';
 import FormInput from 'components/FormInput';
 import FormSubmitButton from 'components/FormSubmitButton';
 import { handleLogin } from '../../controllers';
 
 function Login() {
-  const [inputValidState, setInputValidState] = React.useState<InputValidState>(
-    {
-      email: false,
-      password: false,
-    },
-  );
-
   const navigate = useNavigate();
 
   const { authenticationToken } = useCheckLogin();
 
-  const checkValidation = (target: string, validationResult: boolean) => {
-    setInputValidState((previousState: InputValidState) => ({
-      ...previousState,
-      [target]: validationResult,
-    }));
-  };
+  const { state, disableCondition, checkValidation } = useValidation();
 
-  async function handleSubmit(event: React.FormEvent) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     const loginResult = await handleLogin(event);
     if (loginResult) {
       alert('로그인 되었습니다.');
@@ -50,7 +38,7 @@ function Login() {
           text="이메일"
           placeholder="ex) abcd@email.com"
           className="login-input-area"
-          isValid={inputValidState.email}
+          isValid={state.email}
           regexRule={EMAIL_RULE}
           checkValidation={checkValidation}
         />
@@ -60,15 +48,13 @@ function Login() {
           text="비밀번호"
           placeholder="8자리 이상"
           className="login-input-area"
-          isValid={inputValidState.password}
+          isValid={state.password}
           regexRule={PASSWORD_RULE}
           checkValidation={checkValidation}
         />
         <div className="flex-center flex-col w-full py-5">
           <FormSubmitButton
-            disableCondition={
-              !(inputValidState.email && inputValidState.password)
-            }
+            disableCondition={disableCondition}
             additionalStyles="mb-3"
             value="로그인"
           />

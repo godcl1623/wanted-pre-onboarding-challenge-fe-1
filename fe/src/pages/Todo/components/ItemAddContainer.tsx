@@ -2,18 +2,16 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createTodoItem } from 'controllers';
 import useCheckLogin from 'hooks/useCheckLogin';
+import { returnQueryString } from 'utils/helpers';
 import Path from 'routes/Path';
 
 function ItemAddContainer() {
   const navigate = useNavigate();
   const { authenticationToken } = useCheckLogin();
 
-  async function handleSubmit(event: React.FormEvent) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const currentForm = event.currentTarget as HTMLFormElement;
-    const titleInput = (currentForm[0] as HTMLInputElement).value;
-    const contentInput = (currentForm[1] as HTMLTextAreaElement).value;
-    const queryString = `title=${titleInput}&content=${contentInput}`;
+    const queryString = returnQueryString(event);
     const createResult = await createTodoItem(authenticationToken, queryString);
 
     if (createResult) {

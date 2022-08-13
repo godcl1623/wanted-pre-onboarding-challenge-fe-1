@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { updateTodoItem } from 'controllers';
 import { TodoItemType } from 'types';
 import useCheckLogin from 'hooks/useCheckLogin';
+import { returnQueryString } from 'utils/helpers';
 
 function ItemModifyContainer() {
   const navigate = useNavigate();
@@ -12,12 +13,9 @@ function ItemModifyContainer() {
 
   const itemInfo = state as TodoItemType;
 
-  async function handleSubmit(event: React.FormEvent) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const currentForm = event.currentTarget as HTMLFormElement;
-    const titleInput = (currentForm[0] as HTMLInputElement).value;
-    const contentInput = (currentForm[1] as HTMLTextAreaElement).value;
-    const queryString = `title=${titleInput}&content=${contentInput}`;
+    const queryString = returnQueryString(event);
     const updateResult = await updateTodoItem(
       authenticationToken,
       itemInfo.id,

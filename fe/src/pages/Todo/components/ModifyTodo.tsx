@@ -1,6 +1,5 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { updateTodoItem } from 'controllers';
 import { TodoItemType } from 'types';
 import useCheckAuthenticationToken from 'hooks/useCheckAuthenticationToken';
 import { extractInputValue, returnQueryString } from 'utils/helpers';
@@ -21,16 +20,6 @@ function ModifyTodo() {
     event.preventDefault();
     const [titleInput, contentInput] = extractInputValue(event);
     const queryString = returnQueryString(titleInput, contentInput);
-    // const updateResult = await updateTodoItem(
-    //   authenticationToken,
-    //   itemInfo.id,
-    //   queryString,
-    // );
-
-    // if (updateResult) {
-    //   alert('수정이 완료됐습니다.');
-    //   navigate(`/todos/${itemInfo.id}`);
-    // }
     mutation.mutate(
       {
         token: authenticationToken,

@@ -40,12 +40,6 @@ function Login() {
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const [emailInputValue, passwordInputValue] = extractInputValue(event);
-    // const loginResult = await handleLogin(emailInputValue, passwordInputValue);
-
-    // if (loginResult) {
-    //   alert('로그인 되었습니다.');
-    //   navigate(Path.Todos);
-    // }
     mutation.mutate(
       { emailInputValue, passwordInputValue },
       { onSuccess, onError },

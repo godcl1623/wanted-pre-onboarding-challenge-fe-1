@@ -1,8 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import format from 'date-fns/format';
-import { AxiosResponse } from 'axios';
-import { getTodoLists } from 'controllers';
 import { TodoItemType } from 'types';
 import { DATE_FORMAT_WITH_TIME } from 'utils/constants';
 import { isEqual } from 'utils/capsuledConditions';
@@ -23,7 +21,6 @@ function TodoDetail() {
   });
 
   const param = useParams();
-  // const mutation = useGetLists();
   const { authenticationToken } = useCheckAuthenticationToken();
   const { data, isSuccess, isError, error } = useGetLists(
     [param.id],
@@ -45,22 +42,6 @@ function TodoDetail() {
     });
 
   React.useEffect(() => {
-    // const setGetResultToList = async () => {
-    //   try {
-    //     const getResult = await getTodoLists(authenticationToken, param.id);
-    //     setItemInfo((previousInfo: TodoItemType) => ({
-    //       ...previousInfo,
-    //       id: getResult.id,
-    //       title: getResult.title,
-    //       content: getResult.content,
-    //       createdAt: getResult.createdAt,
-    //       updatedAt: getResult.updatedAt,
-    //     }));
-    //   } catch (error) {
-    //     if (error instanceof Error) throw new Error(error.message);
-    //   }
-    // };
-    // setGetResultToList();
     const updateGetResult = (getResult: TodoItemType) =>
       setItemInfo((previousInfo: TodoItemType) => ({
         ...previousInfo,
@@ -72,7 +53,6 @@ function TodoDetail() {
       }));
     if (isSuccess) onSuccessGet(data, updateGetResult);
     if (isError) onError(error);
-    // }, [param, authenticationToken]);
   }, [param, data, error, isError, isSuccess]);
 
   return (

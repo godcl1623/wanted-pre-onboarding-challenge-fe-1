@@ -1,6 +1,5 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createTodoItem } from 'controllers';
 import useCheckAuthenticationToken from 'hooks/useCheckAuthenticationToken';
 import { extractInputValue, returnQueryString } from 'utils/helpers';
 import Path from 'routes/Path';
@@ -17,12 +16,6 @@ function CreateTodo() {
     event.preventDefault();
     const [titleInput, contentInput] = extractInputValue(event);
     const queryString = returnQueryString(titleInput, contentInput);
-    // const createResult = await createTodoItem(authenticationToken, queryString);
-
-    // if (createResult) {
-    //   alert('저장이 완료됐습니다.');
-    //   navigate(Path.Todos);
-    // }
     mutation.mutate(
       {
         token: authenticationToken,

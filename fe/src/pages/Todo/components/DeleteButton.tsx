@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { deleteTodoItem } from 'controllers';
 import useCheckAuthenticationToken from 'hooks/useCheckAuthenticationToken';
 import Path from 'routes/Path';
+import useDeleteList from '../hooks/useDeleteList';
+import useTodoHelpers from '../hooks/useTodoHelpers';
 
 interface DeleteButtonProps {
   id: string;
@@ -12,16 +14,25 @@ interface DeleteButtonProps {
 
 function DeleteButton({ id, title, additionalStyle }: DeleteButtonProps) {
   const navigate = useNavigate();
+  const mutation = useDeleteList();
+  const { onSuccessDelete, onError } = useTodoHelpers();
   const { authenticationToken } = useCheckAuthenticationToken();
 
   async function handleClick() {
-    const deleteResult = await deleteTodoItem(authenticationToken, id);
+    // const deleteResult = await deleteTodoItem(authenticationToken, id);
 
-    if (deleteResult) {
-      localStorage.removeItem(title);
-      alert('삭제되었습니다.');
-      navigate(Path.Todos);
-    }
+    // if (deleteResult) {
+    //   localStorage.removeItem(title);
+    //   alert('삭제되었습니다.');
+    //   navigate(Path.Todos);
+    // }
+    mutation.mutate(
+      { token: authenticationToken, todoId: id },
+      {
+        onSuccess: () => onSuccessDelete(title, '삭제되었습니다.', Path.Todos),
+        onError,
+      },
+    );
   }
 
   return (

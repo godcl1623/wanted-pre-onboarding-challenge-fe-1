@@ -1,17 +1,22 @@
 import React from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { AxiosResponse } from 'axios';
 import { getTodoLists } from 'controllers';
 import { TodoItemType } from 'types';
 import Path from 'routes/Path';
 import ListItem from './components/ListItem';
 import AddItemButton from './components/AddItemButton';
 import useCheckLogin from '../../hooks/useCheckAuthenticationToken';
+import useGetLists from './hooks/useGetLists';
+import useTodoHelpers from './hooks/useTodoHelpers';
 
 function Todo() {
   const [todoList, setTodoList] = React.useState<TodoItemType[]>([]);
 
   const location = useLocation();
   const navigate = useNavigate();
+  const mutation = useGetLists();
+  const { onSuccessGet, onError } = useTodoHelpers();
   const { authenticationToken } = useCheckLogin();
 
   React.useEffect(() => {
@@ -22,15 +27,22 @@ function Todo() {
   }, [navigate, authenticationToken]);
 
   React.useEffect(() => {
-    const setGetResultToList = async () => {
-      try {
-        const getResult = await getTodoLists(authenticationToken);
-        setTodoList(getResult);
-      } catch (error) {
-        if (error instanceof Error) throw new Error(error.message);
-      }
-    };
-    setGetResultToList();
+    // const setGetResultToList = async () => {
+    //   try {
+    //     const getResult = await getTodoLists(authenticationToken);
+    //     setTodoList(getResult);
+    //   } catch (error) {
+    //     if (error instanceof Error) throw new Error(error.message);
+    //   }
+    // };
+    // setGetResultToList();
+    mutation.mutate(
+      { token: authenticationToken },
+      {
+        onSuccess: (data: AxiosResponse) => onSuccessGet(data, setTodoList),
+        onError,
+      },
+    );
   }, [location.pathname, authenticationToken]);
 
   if (!authenticationToken) return <div />;

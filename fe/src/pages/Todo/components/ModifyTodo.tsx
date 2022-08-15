@@ -4,9 +4,13 @@ import { updateTodoItem } from 'controllers';
 import { TodoItemType } from 'types';
 import useCheckAuthenticationToken from 'hooks/useCheckAuthenticationToken';
 import { extractInputValue, returnQueryString } from 'utils/helpers';
+import useUpdateList from '../hooks/useUpdateList';
+import useTodoHelpers from '../hooks/useTodoHelpers';
 
 function ModifyTodo() {
   const navigate = useNavigate();
+  const mutation = useUpdateList();
+  const { onSuccessPost, onError } = useTodoHelpers();
   const { authenticationToken } = useCheckAuthenticationToken();
 
   const { state } = useLocation();
@@ -17,16 +21,28 @@ function ModifyTodo() {
     event.preventDefault();
     const [titleInput, contentInput] = extractInputValue(event);
     const queryString = returnQueryString(titleInput, contentInput);
-    const updateResult = await updateTodoItem(
-      authenticationToken,
-      itemInfo.id,
-      queryString,
-    );
+    // const updateResult = await updateTodoItem(
+    //   authenticationToken,
+    //   itemInfo.id,
+    //   queryString,
+    // );
 
-    if (updateResult) {
-      alert('수정이 완료됐습니다.');
-      navigate(`/todos/${itemInfo.id}`);
-    }
+    // if (updateResult) {
+    //   alert('수정이 완료됐습니다.');
+    //   navigate(`/todos/${itemInfo.id}`);
+    // }
+    mutation.mutate(
+      {
+        token: authenticationToken,
+        todoId: itemInfo.id,
+        todoItemContent: queryString,
+      },
+      {
+        onSuccess: () =>
+          onSuccessPost('수정이 완료됐습니다.', `/todos/${itemInfo.id}`),
+        onError,
+      },
+    );
   }
 
   function handleClick() {

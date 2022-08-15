@@ -1,14 +1,17 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import format from 'date-fns/format';
+import { AxiosResponse } from 'axios';
 import { getTodoLists } from 'controllers';
 import { TodoItemType } from 'types';
 import { DATE_FORMAT_WITH_TIME } from 'utils/constants';
 import { isEqual } from 'utils/capsuledConditions';
 import useCheckAuthenticationToken from 'hooks/useCheckAuthenticationToken';
 import { shortenString } from 'utils/helpers';
-import ModifyButton from 'components/ModifyButton';
-import DeleteButton from 'components/DeleteButton';
+import ModifyButton from './ModifyButton';
+import DeleteButton from './DeleteButton';
+import useGetLists from '../hooks/useGetLists';
+import useTodoHelpers from '../hooks/useTodoHelpers';
 
 function TodoDetail() {
   const [itemInfo, setItemInfo] = React.useState<TodoItemType>({
@@ -20,6 +23,8 @@ function TodoDetail() {
   });
 
   const param = useParams();
+  const mutation = useGetLists();
+  const { onSuccessGet, onError } = useTodoHelpers();
   const { authenticationToken } = useCheckAuthenticationToken();
 
   const shortenedTitle = shortenString(itemInfo.title);
@@ -35,22 +40,37 @@ function TodoDetail() {
     });
 
   React.useEffect(() => {
-    const setGetResultToList = async () => {
-      try {
-        const getResult = await getTodoLists(authenticationToken, param.id);
-        setItemInfo((previousInfo: TodoItemType) => ({
-          ...previousInfo,
-          id: getResult.id,
-          title: getResult.title,
-          content: getResult.content,
-          createdAt: getResult.createdAt,
-          updatedAt: getResult.updatedAt,
-        }));
-      } catch (error) {
-        if (error instanceof Error) throw new Error(error.message);
-      }
-    };
-    setGetResultToList();
+    // const setGetResultToList = async () => {
+    //   try {
+    //     const getResult = await getTodoLists(authenticationToken, param.id);
+    //     setItemInfo((previousInfo: TodoItemType) => ({
+    //       ...previousInfo,
+    //       id: getResult.id,
+    //       title: getResult.title,
+    //       content: getResult.content,
+    //       createdAt: getResult.createdAt,
+    //       updatedAt: getResult.updatedAt,
+    //     }));
+    //   } catch (error) {
+    //     if (error instanceof Error) throw new Error(error.message);
+    //   }
+    // };
+    // setGetResultToList();
+    const updateGetResult = (getResult: TodoItemType) =>
+      setItemInfo((previousInfo: TodoItemType) => ({
+        ...previousInfo,
+        id: getResult.id,
+        title: getResult.title,
+        content: getResult.content,
+        createdAt: getResult.createdAt,
+        updatedAt: getResult.updatedAt,
+      }));
+    mutation.mutate(
+      { token: authenticationToken, todoId: param.id },
+      {
+        onSuccess: (data: AxiosResponse) => onSuccessGet(data, updateGetResult),
+      },
+    );
   }, [param, authenticationToken]);
 
   return (

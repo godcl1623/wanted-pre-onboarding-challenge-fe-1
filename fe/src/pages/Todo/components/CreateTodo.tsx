@@ -4,21 +4,35 @@ import { createTodoItem } from 'controllers';
 import useCheckAuthenticationToken from 'hooks/useCheckAuthenticationToken';
 import { extractInputValue, returnQueryString } from 'utils/helpers';
 import Path from 'routes/Path';
+import useCreateList from '../hooks/useCreateList';
+import useTodoHelpers from '../hooks/useTodoHelpers';
 
 function CreateTodo() {
   const navigate = useNavigate();
+  const mutation = useCreateList();
+  const { onSuccessPost, onError } = useTodoHelpers();
   const { authenticationToken } = useCheckAuthenticationToken();
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const [titleInput, contentInput] = extractInputValue(event);
     const queryString = returnQueryString(titleInput, contentInput);
-    const createResult = await createTodoItem(authenticationToken, queryString);
+    // const createResult = await createTodoItem(authenticationToken, queryString);
 
-    if (createResult) {
-      alert('저장이 완료됐습니다.');
-      navigate(Path.Todos);
-    }
+    // if (createResult) {
+    //   alert('저장이 완료됐습니다.');
+    //   navigate(Path.Todos);
+    // }
+    mutation.mutate(
+      {
+        token: authenticationToken,
+        todoItemContent: queryString,
+      },
+      {
+        onSuccess: () => onSuccessPost('저장이 완료됐습니다.', Path.Todos),
+        onError,
+      },
+    );
   }
 
   function handleClick() {

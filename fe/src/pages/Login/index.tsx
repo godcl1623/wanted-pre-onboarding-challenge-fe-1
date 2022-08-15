@@ -8,7 +8,8 @@ import { isEqual } from 'utils/capsuledConditions';
 import { extractInputValue } from 'utils/helpers';
 import FormInput from 'components/FormInput';
 import FormSubmitButton from 'components/FormSubmitButton';
-import { handleLogin } from '../../controllers';
+import useLoginHandler from './useLoginHandler';
+import useLoginHelpers from './useLoginHelpers';
 
 function Login() {
   const [inputValidState, setInputValidState] = React.useState<InputValidState>(
@@ -24,6 +25,8 @@ function Login() {
   const numberOfTotalInputs = Object.keys(inputValidState).length;
 
   const navigate = useNavigate();
+  const mutation = useLoginHandler();
+  const { onSuccess, onError } = useLoginHelpers();
 
   const { authenticationToken } = useCheckAuthenticationToken();
 
@@ -37,12 +40,16 @@ function Login() {
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const [emailInputValue, passwordInputValue] = extractInputValue(event);
-    const loginResult = await handleLogin(emailInputValue, passwordInputValue);
+    // const loginResult = await handleLogin(emailInputValue, passwordInputValue);
 
-    if (loginResult) {
-      alert('로그인 되었습니다.');
-      navigate(Path.Todos);
-    }
+    // if (loginResult) {
+    //   alert('로그인 되었습니다.');
+    //   navigate(Path.Todos);
+    // }
+    mutation.mutate(
+      { emailInputValue, passwordInputValue },
+      { onSuccess, onError },
+    );
   }
 
   React.useEffect(() => {

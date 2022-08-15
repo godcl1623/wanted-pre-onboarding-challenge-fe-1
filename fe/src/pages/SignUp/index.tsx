@@ -8,6 +8,8 @@ import { isEqual } from 'utils/capsuledConditions';
 import FormInput from 'components/FormInput';
 import FormSubmitButton from 'components/FormSubmitButton';
 import { extractInputValue } from 'utils/helpers';
+import useSignUpHandler from './useSignUpHandler';
+import useSignUpHelpers from './useSignUpHelpers';
 
 interface SignUpValidState extends InputValidState {
   passwordCheck: boolean;
@@ -29,6 +31,8 @@ function SignUp() {
   const totalInputs = Object.keys(inputValidState).length;
 
   const navigate = useNavigate();
+  const mutation = useSignUpHandler();
+  const { onSuccess, onError } = useSignUpHelpers();
 
   const checkIfInputValid = (inputName: string, isInputValid: boolean) => {
     setInputValidState((previousState: SignUpValidState) => ({
@@ -40,15 +44,19 @@ function SignUp() {
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const [emailInputValue, passwordInputValue] = extractInputValue(event);
-    const signUpResult = await handleSignUp(
-      emailInputValue,
-      passwordInputValue,
-    );
+    // const signUpResult = await handleSignUp(
+    //   emailInputValue,
+    //   passwordInputValue,
+    // );
 
-    if (signUpResult) {
-      alert('회원가입이 완료되었습니다.');
-      navigate(Path.Root);
-    }
+    // if (signUpResult) {
+    //   alert('회원가입이 완료되었습니다.');
+    //   navigate(Path.Root);
+    // }
+    mutation.mutate(
+      { emailInputValue, passwordInputValue },
+      { onSuccess, onError },
+    );
   }
 
   function handleClick() {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useMutation } from '@tanstack/react-query';
+import { useQuery, QueryKey } from '@tanstack/react-query';
 import { TokenType } from 'types';
 import returnApis from 'api/returnApis';
 
@@ -8,15 +8,15 @@ interface MutateFunctionParameters {
   todoId?: string;
 }
 
-const useGetLists = () => {
+const useGetLists = (key: QueryKey, token: TokenType, todoId = '') => {
   const { getData } = returnApis();
-
-  return useMutation(({ token, todoId = '' }: MutateFunctionParameters) => {
-    const queryString = todoId && `/${todoId}`;
-    return getData(`/todos${queryString}`, {
+  const queryString = todoId && `/${todoId}`;
+  const getTodoList = () =>
+    getData(`/todos${queryString}`, {
       headers: { Authorization: token },
     });
-  });
+
+  return useQuery(key, getTodoList);
 };
 
 export default useGetLists;

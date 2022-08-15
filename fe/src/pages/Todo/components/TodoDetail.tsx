@@ -23,9 +23,14 @@ function TodoDetail() {
   });
 
   const param = useParams();
-  const mutation = useGetLists();
-  const { onSuccessGet, onError } = useTodoHelpers();
+  // const mutation = useGetLists();
   const { authenticationToken } = useCheckAuthenticationToken();
+  const { data, isSuccess, isError, error } = useGetLists(
+    [param.id],
+    authenticationToken,
+    param.id,
+  );
+  const { onSuccessGet, onError } = useTodoHelpers();
 
   const shortenedTitle = shortenString(itemInfo.title);
 
@@ -65,13 +70,10 @@ function TodoDetail() {
         createdAt: getResult.createdAt,
         updatedAt: getResult.updatedAt,
       }));
-    mutation.mutate(
-      { token: authenticationToken, todoId: param.id },
-      {
-        onSuccess: (data: AxiosResponse) => onSuccessGet(data, updateGetResult),
-      },
-    );
-  }, [param, authenticationToken]);
+    if (isSuccess) onSuccessGet(data, updateGetResult);
+    if (isError) onError(error);
+    // }, [param, authenticationToken]);
+  }, [param, data, error, isError, isSuccess]);
 
   return (
     <article id="details" className="basis-1/2 ml-[0.5%] shadow-lg p-10">

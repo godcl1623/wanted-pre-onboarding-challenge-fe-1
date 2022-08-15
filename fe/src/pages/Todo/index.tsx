@@ -4,6 +4,7 @@ import { AxiosResponse } from 'axios';
 import { getTodoLists } from 'controllers';
 import { TodoItemType } from 'types';
 import Path from 'routes/Path';
+import { isEqual } from 'utils/capsuledConditions';
 import ListItem from './components/ListItem';
 import AddItemButton from './components/AddItemButton';
 import useCheckLogin from '../../hooks/useCheckAuthenticationToken';
@@ -15,9 +16,12 @@ function Todo() {
 
   const location = useLocation();
   const navigate = useNavigate();
-  const mutation = useGetLists();
   const { onSuccessGet, onError } = useTodoHelpers();
   const { authenticationToken } = useCheckLogin();
+  const { data, isSuccess, isError, error } = useGetLists(
+    ['allLists'],
+    authenticationToken,
+  );
 
   React.useEffect(() => {
     if (!authenticationToken) {
@@ -26,24 +30,22 @@ function Todo() {
     }
   }, [navigate, authenticationToken]);
 
+  // React.useEffect(() => {
+  //   // const setGetResultToList = async () => {
+  //   //   try {
+  //   //     const getResult = await getTodoLists(authenticationToken);
+  //   //     setTodoList(getResult);
+  //   //   } catch (error) {
+  //   //     if (error instanceof Error) throw new Error(error.message);
+  //   //   }
+  //   // };
+  //   // setGetResultToList();
+  // }, [location.pathname, authenticationToken]);
+
   React.useEffect(() => {
-    // const setGetResultToList = async () => {
-    //   try {
-    //     const getResult = await getTodoLists(authenticationToken);
-    //     setTodoList(getResult);
-    //   } catch (error) {
-    //     if (error instanceof Error) throw new Error(error.message);
-    //   }
-    // };
-    // setGetResultToList();
-    mutation.mutate(
-      { token: authenticationToken },
-      {
-        onSuccess: (data: AxiosResponse) => onSuccessGet(data, setTodoList),
-        onError,
-      },
-    );
-  }, [location.pathname, authenticationToken]);
+    if (isSuccess) onSuccessGet(data, setTodoList);
+    else if (isError) onError(error);
+  }, [isSuccess, isError]);
 
   if (!authenticationToken) return <div />;
 

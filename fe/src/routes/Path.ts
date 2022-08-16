@@ -1,11 +1,11 @@
 enum Path {
   Root = '/',
   Auth = '/auth',
-  SignUp = '/signup',
-  Items = '/items',
-  Detail = ':id',
-  Add = 'new',
-  Modify = ':id/modify',
+  SignUp = '/auth/signup',
+  Todos = '/todos',
+  Detail = '/todos/:id',
+  Add = '/todos/create',
+  Modify = '/todos/:id/modify',
 }
 
 export default Path;

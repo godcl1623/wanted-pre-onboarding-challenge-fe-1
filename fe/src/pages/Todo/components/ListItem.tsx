@@ -1,8 +1,10 @@
 import React from 'react';
 import { NavLink, useParams } from 'react-router-dom';
+import format from 'date-fns/format';
 import { TodoItemType } from 'types';
+import { DATE_FORMAT_WITHOUT_TIME } from 'utils/constants';
 import { isEqual } from 'utils/capsuledConditions';
-import { formatDate, shortenString } from 'utils/helpers';
+import { shortenString } from 'utils/helpers';
 
 function ListItem({ id, title, content, createdAt, updatedAt }: TodoItemType) {
   const [isChecked, setIsChecked] = React.useState<boolean>(false);
@@ -10,8 +12,8 @@ function ListItem({ id, title, content, createdAt, updatedAt }: TodoItemType) {
   const params = useParams();
 
   const dateString = isEqual(createdAt, updatedAt)
-    ? formatDate(createdAt)
-    : formatDate(updatedAt);
+    ? format(new Date(createdAt), DATE_FORMAT_WITHOUT_TIME)
+    : format(new Date(updatedAt), DATE_FORMAT_WITHOUT_TIME);
 
   const checkedStringStyle = isChecked ? 'line-through text-zinc-300' : '';
 

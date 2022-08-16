@@ -1,13 +1,16 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { updateTodoItem } from 'controllers';
 import { TodoItemType } from 'types';
-import useCheckLogin from 'hooks/useCheckLogin';
-import { returnQueryString } from 'utils/helpers';
+import useCheckAuthenticationToken from 'hooks/useCheckAuthenticationToken';
+import { extractInputValue, returnQueryString } from 'utils/helpers';
+import useUpdateList from '../hooks/useUpdateList';
+import useTodoHelpers from '../hooks/useTodoHelpers';
 
-function ItemModifyContainer() {
+function ModifyTodo() {
   const navigate = useNavigate();
-  const { authenticationToken } = useCheckLogin();
+  const mutation = useUpdateList();
+  const { onSuccessPost, onError } = useTodoHelpers();
+  const { authenticationToken } = useCheckAuthenticationToken();
 
   const { state } = useLocation();
 
@@ -15,17 +18,20 @@ function ItemModifyContainer() {
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const queryString = returnQueryString(event);
-    const updateResult = await updateTodoItem(
-      authenticationToken,
-      itemInfo.id,
-      queryString,
+    const [titleInput, contentInput] = extractInputValue(event);
+    const queryString = returnQueryString(titleInput, contentInput);
+    mutation.mutate(
+      {
+        token: authenticationToken,
+        todoId: itemInfo.id,
+        todoItemContent: queryString,
+      },
+      {
+        onSuccess: () =>
+          onSuccessPost('수정이 완료됐습니다.', `/todos/${itemInfo.id}`),
+        onError,
+      },
     );
-
-    if (updateResult) {
-      alert('수정이 완료됐습니다.');
-      navigate(`/items/${itemInfo.id}`);
-    }
   }
 
   function handleClick() {
@@ -71,4 +77,4 @@ function ItemModifyContainer() {
   );
 }
 
-export default React.memo(ItemModifyContainer);
+export default React.memo(ModifyTodo);

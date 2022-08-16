@@ -1,20 +1,14 @@
 import React from 'react';
-import format from 'date-fns/format';
 
 export const returnAlertMessage = (locationString: string) => {
   switch (locationString) {
     case '/auth':
       return '로그인 정보가 올바르지 않습니다.';
-    case '/signup':
+    case '/auth/signup':
       return '이미 가입된 정보입니다.';
     default:
       return '오류가 발생했습니다.';
   }
-};
-
-export const formatDate = (dateString: string, withTime = false) => {
-  const dateFormat = withTime ? 'yyyy-MM-dd HH:mm:ss' : 'yyyy-MM-dd';
-  return format(new Date(dateString), dateFormat);
 };
 
 export const shortenString = (stringToShorten: string) => {
@@ -30,13 +24,16 @@ export const extractInputValue = (event: React.FormEvent<HTMLFormElement>) => {
   const firstInput = formEventTarget['0'];
   const secondInput = formEventTarget['1'];
   if (firstInput instanceof HTMLInputElement) firstValue = firstInput.value;
-  if (secondInput instanceof HTMLInputElement) secondValue = secondInput.value;
+  if (
+    secondInput instanceof HTMLInputElement ||
+    secondInput instanceof HTMLTextAreaElement
+  )
+    secondValue = secondInput.value;
 
   return [firstValue, secondValue];
 };
 
-export const returnQueryString = (event: React.FormEvent<HTMLFormElement>) => {
-  const [titleInput, contentInput] = extractInputValue(event);
+export const returnQueryString = (titleInput: string, contentInput: string) => {
   const queryString = `title=${titleInput}&content=${contentInput}`;
 
   return queryString;

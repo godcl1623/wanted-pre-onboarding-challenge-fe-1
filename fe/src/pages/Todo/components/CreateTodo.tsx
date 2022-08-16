@@ -1,23 +1,31 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createTodoItem } from 'controllers';
-import useCheckLogin from 'hooks/useCheckLogin';
-import { returnQueryString } from 'utils/helpers';
+import useCheckAuthenticationToken from 'hooks/useCheckAuthenticationToken';
+import { extractInputValue, returnQueryString } from 'utils/helpers';
 import Path from 'routes/Path';
+import useCreateList from '../hooks/useCreateList';
+import useTodoHelpers from '../hooks/useTodoHelpers';
 
-function ItemAddContainer() {
+function CreateTodo() {
   const navigate = useNavigate();
-  const { authenticationToken } = useCheckLogin();
+  const mutation = useCreateList();
+  const { onSuccessPost, onError } = useTodoHelpers();
+  const { authenticationToken } = useCheckAuthenticationToken();
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const queryString = returnQueryString(event);
-    const createResult = await createTodoItem(authenticationToken, queryString);
-
-    if (createResult) {
-      alert('저장이 완료됐습니다.');
-      navigate(Path.Items);
-    }
+    const [titleInput, contentInput] = extractInputValue(event);
+    const queryString = returnQueryString(titleInput, contentInput);
+    mutation.mutate(
+      {
+        token: authenticationToken,
+        todoItemContent: queryString,
+      },
+      {
+        onSuccess: () => onSuccessPost('저장이 완료됐습니다.', Path.Todos),
+        onError,
+      },
+    );
   }
 
   function handleClick() {
@@ -58,4 +66,4 @@ function ItemAddContainer() {
   );
 }
 
-export default React.memo(ItemAddContainer);
+export default React.memo(CreateTodo);

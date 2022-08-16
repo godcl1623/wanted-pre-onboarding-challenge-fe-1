@@ -1,3 +1,8 @@
+export interface InputValidState {
+  email: boolean;
+  password: boolean;
+}
+
 export interface TodoItemType {
   id: string;
   title: string;

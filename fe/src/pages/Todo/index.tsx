@@ -1,18 +1,23 @@
 import React from 'react';
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { getTodoLists } from 'controllers';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { TodoItemType } from 'types';
 import Path from 'routes/Path';
 import ListItem from './components/ListItem';
 import AddItemButton from './components/AddItemButton';
-import useCheckLogin from '../../hooks/useCheckLogin';
+import useCheckLogin from '../../hooks/useCheckAuthenticationToken';
+import useGetLists from './hooks/useGetLists';
+import useTodoHelpers from './hooks/useTodoHelpers';
 
 function Todo() {
   const [todoList, setTodoList] = React.useState<TodoItemType[]>([]);
 
-  const location = useLocation();
   const navigate = useNavigate();
+  const { onSuccessGet, onError } = useTodoHelpers();
   const { authenticationToken } = useCheckLogin();
+  const { data, isSuccess, isError, error } = useGetLists(
+    ['allLists'],
+    authenticationToken,
+  );
 
   React.useEffect(() => {
     if (!authenticationToken) {
@@ -22,16 +27,9 @@ function Todo() {
   }, [navigate, authenticationToken]);
 
   React.useEffect(() => {
-    const setGetResultToList = async () => {
-      try {
-        const getResult = await getTodoLists(authenticationToken);
-        setTodoList(getResult);
-      } catch (error) {
-        if (error instanceof Error) throw new Error(error.message);
-      }
-    };
-    setGetResultToList();
-  }, [location.pathname, authenticationToken]);
+    if (isSuccess) onSuccessGet(data, setTodoList);
+    else if (isError) onError(error);
+  }, [isSuccess, isError]);
 
   if (!authenticationToken) return <div />;
 
